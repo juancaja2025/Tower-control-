@@ -1,0 +1,64 @@
+﻿codigo,nombre,proceso,plataforma_detecta,granularidad,umbral,severidad_sugerida,alimenta_a,se_resuelve_sola_cuando,inventario_relacionado,estado_umbral
+UNIDAD_DETENIDA,Unidad detenida en ruta,Troncales / Última milla,LT,unidad,">20 min (solo DEMO, torre 2646); umbral real de LT NO ENCONTRADO",P1 si es troncal con carga; P2 en UM,"SUCURSAL_EN_RIESGO, TRONCAL_ARRIBO_TARDE",La unidad vuelve a moverse,T31,A confirmar
+UNIDAD_SIN_GPS,Unidad sin reporte GPS,Troncales / Última milla,LT,unidad,25 min (E-2280) contra 30 min / 1 h (definición tgp): DEFINIR uno,P3 (P2 si es troncal en viaje),"GPS_ACTIVO_BAJO, SUCURSAL_EN_RIESGO",Llega una posición nueva,"T32, T33",Conflicto
+TRONCAL_SIN_SALIR,Troncal sin salida pasado el ETD,Troncales,LT,troncal,"Crítico apenas pasa el ETD sin ATD (torre 1581, 2128); tolerancia NO ENCONTRADO",P1,"TRONCALES_A_TIEMPO_BAJO, PIEZAS_EN_VIAJE_POR_VENCER, XD_ARRIBO_ATRASADO",Se registra el ATD,T30,Conflicto
+TRONCAL_DEMORADA_SALIDA,Troncal que salió tarde,Troncales,LT,troncal,"Aviso >15 min; crítico >45 min sobre el ETD (torre 1615, 2132); el promedio de red usa 20/45",P2 (P1 si >45 min con carga que vence hoy),TRONCALES_A_TIEMPO_BAJO,No aplica (es un hecho): se cierra cuando se reprograma la ventana de arribo,"T28, T29, A02",Conflicto
+TRONCAL_ARRIBO_TARDE,Troncal con arribo (ATA o ETA estimada) posterior al ETA,Troncales / Crossdock,LT,troncal,ATA > ETA (definición torre 1223); tolerancia NO ENCONTRADO,P2,"XD_ARRIBO_ATRASADO, PIEZAS_EN_VIAJE_POR_VENCER, SUCURSAL_EN_RIESGO",La ETA estimada vuelve dentro de la tolerancia,F02,Faltante
+TRONCAL_FUERA_DE_RUTA,Troncal fuera del corredor previsto,Troncales,LT,unidad,NO ENCONTRADO,P2,—,La unidad vuelve al corredor,F03,Faltante
+INCIDENCIA_TRONCAL,Incidencia de troncal informada por monitoreo,Troncales,LT,troncal (por patente),"Toda incidencia; MTTR objetivo 45 min, umbral 60 min",Según el tipo de incidencia (NO ENCONTRADO),TRONCALES_A_TIEMPO_BAJO,No: cierre manual con causa,"T34, A02",Definido
+ENTREGA_FUERA_DE_GEO,Entrega registrada lejos de la dirección,Última milla,LT,parada / chofer,>700 m (LT),P3,DESVIOS_EN_CALLE_ZONA,No: auditoría,L07,Definido
+CHOFER_VISITAS_FALLIDAS,Chofer con alta tasa de visitas fallidas,Última milla,LT,chofer,30% de ausentes (solo en el texto de E-2283),P3,"PRIMER_INTENTO_BAJO, VISITAS_NO_EFECTIVAS_ALTAS",La tasa del recorrido baja del umbral,F05,A confirmar
+RECORRIDO_SIN_INICIAR,Recorrido ruteado que no salió,Última milla,LT,recorrido,NO ENCONTRADO,P2,"AVANCE_DIA_BAJO, SUCURSAL_EN_RIESGO",El recorrido inicia,F06,Faltante
+DIRECCION_SIN_GEO,Dirección sin geolocalización,Última milla / Admisión,LT,dirección,NO ENCONTRADO,P3,—,La dirección se geocodifica,L05,A definir
+GEO_INCORRECTA,Parada con marca de geo incorrecta,Última milla,LT,parada,NO ENCONTRADO,P3,REENCAMINADOS_ALTOS,Se corrige la geo,L06,A definir
+APP_EN_CAMINO_SIN_USO,Centro o chofer sin uso de EN CAMINO,Última milla,LT,centro / chofer,NO ENCONTRADO,P3,—,El uso vuelve sobre el umbral,L03,Faltante
+SUCURSAL_EN_RIESGO,Sucursal en riesgo (agregada),Última milla / todas,Torre,sucursal,"SLA <95% aviso, <93% crítico (torre 1585) + N eventos de LT en la ventana (NO ENCONTRADO) + top 5 >20% no entregadas","P1 si crítico con eventos de LT abiertos; si no, P2",—,El SLA y los eventos de LT vuelven a la normalidad,"T02, T03, T07, T21, F01",Conflicto (escala del mapa)
+SLA_RED_BAJO,SLA del día bajo objetivo,General,Torre,red,≥95% / 93% (contingencia 91%),P2,—,Vuelve ≥ objetivo,T01,Definido
+SLA_UM_BAJO,SLA de entrega de última milla bajo objetivo,Última milla,Torre,red / ventana,≥95% / 93%,P2,SUCURSAL_EN_RIESGO,Vuelve ≥ objetivo,T11,Definido
+PRIMER_INTENTO_BAJO,Efectividad de 1er intento baja,Última milla,Torre,zona / sucursal,≥88% / 85%,P2,SUCURSAL_EN_RIESGO,Vuelve ≥ objetivo,T12,Definido
+VISITAS_NO_EFECTIVAS_ALTAS,Visitas no efectivas altas,Última milla,Torre (LT aporta el evento),sucursal,≤10% / 14%; motivo dominante >35%,P3,SUCURSAL_EN_RIESGO,Vuelve ≤ objetivo,"T17, T24, L04",Duplicada
+AVANCE_DIA_BAJO,Avance del día bajo lo esperado,Última milla,Torre,sucursal,"73,5% esperado / 70% a esta hora",P2,SUCURSAL_EN_RIESGO,Alcanza lo esperado,"T15, L02",Definido
+ENTREGA_SOBRE_VISITADOS_BAJA,Entrega sobre visitados baja,Última milla,Torre,sucursal,≥90% / 87%,P3,—,Vuelve ≥ objetivo,T16,Definido
+REENCAMINADOS_ALTOS,Reencaminados altos,Última milla,Torre,sucursal,≤4% / 5%,P3,—,Vuelve ≤ objetivo,T18,Definido
+PIEZAS_SLA_EN_RIESGO,Piezas por vencer o vencidas,Última milla,Torre,sucursal,≤7.000 / 9.000 piezas,P2,SUCURSAL_EN_RIESGO,Vuelve ≤ objetivo,T19,Definido
+BACKLOG_ANTIGUO,Backlog +48 h sobre el límite,Última milla,Torre,red / sucursal,+48 h > 1.000 piezas (red); sin umbral por sucursal,P2,SUCURSAL_EN_RIESGO,Vuelve bajo el límite,"T13, T20",Conflicto
+EQUIPO_SIN_MOVIMIENTO,Equipos sin movimiento,Última milla / Admisión,Torre,sucursal,+15 días aviso; +30 días crítico (borrador),P3,BACKLOG_ANTIGUO,El equipo se mueve,T14,Conflicto
+PROCESO_FUERA_DE_TARGET,Proceso del día fuera del target,Todos,Torre,sucursal × proceso,hasta 30 min aviso; más de 30 min crítico (provisorio),P2,SUCURSAL_EN_RIESGO,Termina o vuelve dentro del target,T08,Provisorio
+CIRCUITO_TRANSPORTE_DEMORADO,Circuito cita → arribo → despacho demorado,Última milla,Torre (eventos de LT),sucursal / hora,Cita→arribo 30 min; carga 45 min; recorrido 420 min; arribos <90% del plan,P3,SUCURSAL_EN_RIESGO,Vuelve al plan,T25,Definido
+PRODUCTIVIDAD_HORARIA_BAJA,Visitas por hora bajo el ritmo necesario,Última milla,Torre,red / sucursal,<90% del ritmo necesario,P3,AVANCE_DIA_BAJO,Hora siguiente sobre el ritmo,T22,Definido
+NO_ENTREGADOS_SOBRE_REFERENCIA,No entregados sobre la semana pasada,Última milla,Torre,red,>125% por hora; >110% en el día,P3,—,Vuelve a la referencia,T23,Definido
+VENTANA_ENTREGA_INCUMPLIDA,Ventana de entrega bajo objetivo,Última milla,Torre,ventana,≥95% / 93%,P3,—,Vuelve ≥ objetivo,T26,Definido
+PENDIENTES_SOBRE_HABITUAL,Pendientes sobre el volumen habitual,Última milla,Torre,provincia,2% / 5% / 10%,P3,SUCURSAL_EN_RIESGO,Vuelve <2%,T04,Definido
+DESVIOS_EN_CALLE_ZONA,Desvíos en calle concentrados en una zona,Última milla / Troncales,Torre (eventos de LT),provincia,≥20 desvíos por provincia (panel),P3,SUCURSAL_EN_RIESGO,Baja de 20,"T05, L07",A confirmar
+TRONCALES_A_TIEMPO_BAJO,Troncales a tiempo bajo objetivo,Troncales,Torre,red / región,≥92% / 85%; tolerancia 15 min,P2,—,Vuelve ≥ objetivo,"T27, T35",Conflicto
+GPS_ACTIVO_BAJO,Unidades con GPS activo bajo objetivo,Troncales,Torre,red,≥98% / 95%,P3,—,Vuelve ≥ objetivo,T32,Definido
+PIEZAS_EN_VIAJE_POR_VENCER,Piezas en troncal que vencen hoy o mañana,Troncales,Torre (ETA de LT),sucursal destino,Hoy = crítico; mañana = aviso,P2,SUCURSAL_EN_RIESGO,La troncal arriba,T36,Definido
+RIESGO_EXTERNO,"Riesgo externo (clima, cortes)",Troncales / todas,Torre,zona / ruta,Carga manual,P2,"TRONCAL_DEMORADA_SALIDA, SUCURSAL_EN_RIESGO",Vence la alerta externa,T37,Manual
+ADMISION_CORTE_EN_RIESGO,Corte de admisión con escaneo incompleto,Admisión,Torre,hub / cliente,NO ENCONTRADO,P2,—,Se alcanza el 100% antes del corte,"T58, A01",A definir
+XD_OLA_EN_RIESGO,Ola de salida en riesgo,Crossdock,Torre,ola,NO ENCONTRADO por ola; KPI 95% / 90%,P2,—,La ola se despacha,T47,A definir
+XD_CPT_EN_RIESGO,CPT con proyección bajo 100%,Crossdock,Torre,CPT,100% / 97% / 94%,"P1 si <94% a menos de 1 h del corte; si no, P2",—,Proyección ≥100%,T44,Definido
+XD_RFD_BAJO,RFD bajo objetivo,Crossdock,Torre,CPT / subca,≥95% / 90%,P2,XD_CPT_EN_RIESGO,Vuelve ≥ objetivo,T38,Definido
+XD_DOT_BAJO,DOT bajo objetivo,Crossdock,Torre,CPT / subca,≥95% / 92%,P2,—,Vuelve ≥ objetivo,T39,Definido
+XD_INHUB_BAJO,Inhub bajo lo proyectado,Crossdock,Torre,subca,≥95% / 90%,P3,—,Vuelve ≥ objetivo,T40,Definido
+XD_PLAYA_ALTA,Shipments en playa altos,Crossdock,Torre,hub,≤5.000 / 7.000,P2,—,Vuelve ≤ objetivo,T41,Definido
+XD_ARMADO_PENDIENTE,Pendientes de armado de HU altos,Crossdock,Torre,hub,≤5.000 / 8.000,P2,—,Vuelve ≤ objetivo,T42,Definido
+XD_AVANCE_HU_BAJO,Avance en HU bajo,Crossdock,Torre,hub,≥80% / 70%,P3,—,Vuelve ≥ objetivo,T43,Definido
+XD_ETAPA_ATRASADA,Etapa del crossdock bajo objetivo,Crossdock,Torre,hub × etapa,In HUB 95/90 … despachado 20/15,P3,—,Vuelve ≥ objetivo,T45,Definido
+XD_DESPACHO_BAJO,Despachado / recibido bajo,Crossdock,Torre,nodo,≥95% / 90%,P3,SUCURSAL_EN_RIESGO,Vuelve ≥ objetivo,T46,Definido
+XD_ARRIBO_ATRASADO,Arribo al XD atrasado (troncal o colecta),Crossdock,Torre (ETA de LT),hub,NO ENCONTRADO,P2,"XD_CPT_EN_RIESGO, XD_OLA_EN_RIESGO",Arriba la unidad,T48,A definir
+XD_VOLUMEN_ANOMALO,Subida o baja de volumen contra lo proyectado,Crossdock,Torre,hub / cliente,"NO ENCONTRADO (ejemplos +18%, −35%)",P3,—,No: informativa,T48,A definir
+XD_CUELLO_DE_BOTELLA,Etapa del nodo CBN que acumula carga,Crossdock,Torre,nodo,NO ENCONTRADO (hoy es relativo),P3,—,La etapa drena,T49,A definir
+XD_SIN_CANALIZAR,Piezas sin canalizar al cierre,Crossdock,Torre,hub,NO ENCONTRADO,P3,—,Se canalizan,T50,Faltante
+CBT_SLA_BAJO,SLA CBT bajo objetivo,Courier/CBT,Torre,red / sucursal,24 h: 95/93; 48 h: 98/96,P2,—,Vuelve ≥ objetivo,"T51, T52, A03",Definido
+CBT_LIBERACION_LENTA,Liberación aduanera lenta,Courier/CBT,Torre,red,≤8 h / 12 h,P2,CBT_SLA_BAJO,Vuelve ≤ objetivo,T54,Conflicto
+CBT_STOCK_ADUANA_ALTO,Envíos en aduana altos,Courier/CBT,Torre,red,≤3.000 / 4.000,P3,—,Vuelve ≤ objetivo,T53,Definido
+CBT_LOTE_RETENIDO,Lote CBT retenido (canal rojo),Courier/CBT,Torre,lote / cliente,NO ENCONTRADO,P3 (P2 si vence hoy),CBT_SLA_BAJO,El lote se libera,"T56, A04",A definir
+CBT_VENCIMIENTO_EN_RIESGO,Corte de vencimiento CBT en riesgo,Courier/CBT,Torre,corte horario,NO ENCONTRADO,P2,—,Se cumple el corte,T57,A definir
+CBT_UM_BAJO,Entrega UM de CBT baja,Courier/CBT,Torre,red,≥96% / 94%,P3,—,Vuelve ≥ objetivo,T55,Definido
+FUENTE_SIN_DATOS,Integración sin datos,Todos,Torre,fuente,WMS 5; GPS/TMS 3; MELI 5; Aduana 10; OMS 10 min,P2 (P1 si es GPS/TMS),"Todas las de esa fuente pasan a ""sin datos""",Llega un dato nuevo,T09,Definido
+ECOMMERCE_PICKING_ATRASADO,Pedidos sin picking cerca del corte,Admisión / E-commerce,Torre,cliente / hub,NO ENCONTRADO,P2,—,Se completa el picking,T59,A definir
+FALLA_EQUIPAMIENTO,Falla de equipamiento en el nodo,Crossdock / Admisión,Torre (carga manual),equipo,NO ENCONTRADO,P3,XD_OLA_EN_RIESGO,No: cierre manual,T60,Manual
+RECLAMOS_EN_AUMENTO,Reclamos en aumento,Última milla,Torre,sucursal / cliente,NO ENCONTRADO,P3,SUCURSAL_EN_RIESGO,Vuelve a la referencia,T61,A definir
+DEVOLUCIONES_PENDIENTES,Devoluciones sin consolidar,Última milla,Torre,sucursal,NO ENCONTRADO,P3,—,Se consolidan,T62,A definir
+EXCEPCION_SIN_TOMAR,Excepción nueva sin tomar,Gestión (Bitácora),Torre,excepción,MTTR objetivo 45 min / umbral 60 min; tiempo sin tomar NO ENCONTRADO,Hereda la prioridad,—,Alguien la toma,T06,A definir
+EXCEPCION_VENCIDA,Excepción vencida sin resolver,Gestión (Bitácora),Torre,excepción,P1 2 h; P2 4 h; P3 8 h,Sube un nivel y escala al Jefe de turno,—,Se resuelve,"T63, F04",Conflicto

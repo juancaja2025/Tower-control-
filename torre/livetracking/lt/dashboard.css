@@ -1,0 +1,234 @@
+﻿body {
+    background-color: #f7f7f7;
+    /* gris claro */
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.cards_title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cards_text {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #424242
+}
+.cards_text-1 {
+    font-size: 12px;
+    font-weight: bold;
+    /* margin-bottom: 20px; */
+    color: #424242
+}
+
+#PanelGrafico,
+#PanelGrafico .row {
+    --bs-gutter-x: 0 !important;
+}
+
+.barra-avance {
+    width: 100px;
+    height: 6px;
+    background-color: #0099a8;
+    border-radius: 10px;
+}
+
+.icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #dbffeb;
+    border: 2px solid #dbffeb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#download-sin-geo,
+#download-visitas_fallidas,
+#download-geo-incorrecta,
+#download-desvio-geo {
+    cursor: pointer;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+.card-body-dashboard {
+    padding: .5rem .5rem;
+}
+
+.container-hub {
+    border: 0px solid;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card-dashboard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    background-color: #fff;
+    border-radius: 0.25rem;
+}
+
+.font-small {
+    font-size: 11px;
+}
+
+/*.overlay span {
+        display: block;*/
+/* cambia span a block para que respete ancho */
+/*text-align: center;*/
+/* centra el texto dentro del span */
+/*vertical-align: middle;
+        max-width: 100%;*/
+/* opcional, limita ancho para mejor lectura */
+/*}*/
+
+
+
+.download-buttom-card {
+    position: relative;
+    bottom: 12% !important;
+    left: 5% !important;
+}
+
+
+
+.box-info-graphics {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* orientación vertical */
+    justify-content: center;
+    /* centrar vertical */
+    border-left: 5px solid;
+    /* lado izquierdo azul */
+    border-color: #0099a8;
+    background-color: transparent;
+    /* fondo suave para visual */
+    padding: 10px 10px;
+    /*width: 250px;*/
+    /* ancho del rectángulo */
+    height: 60px;
+    /* alto del rectángulo */
+    gap: 1px;
+    /* espacio entre spans */
+    bottom: 110% !important;
+    left: 65%;
+}
+
+/*
+#info-dir-sin-geo {
+    bottom: 110% !important;
+    left: 65%;
+}*/
+
+/*media querys*/
+@media (min-width: 1200px) {
+
+    .card-dashboard {
+        padding: 4px;
+    }
+
+    .icon-circle {
+        width: 52px;
+        height: 52px;
+    }
+
+    .icon-circle span {
+        font-size: 28px;
+    }
+
+    .card-dashboard .h3 {
+        font-size: 28px;
+    }
+}
+
+/*  TABLET  */
+@media (max-width: 1100px) {
+
+    #info-dir-sin-geo,
+    #info-desvio-geo {
+        left: 55%;
+        font-size: 15px
+    }
+
+    #info-visitas-fallidas {
+        left: 50%
+    }
+}
+
+@media (max-width: 991px) {
+    .card-dashboard {
+        height: auto !important;
+    }
+
+    .card-metric .h3 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .icon-circle {
+        width: 42px;
+        height: 42px;
+    }
+
+    .icon-circle span {
+        font-size: 22px;
+    }
+
+    .card-dashboard .h3 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .card-metric {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .card-metric .row {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .card-metric .icon-circle {
+        margin-bottom: 4px;
+    }
+
+    .card-metric .h3 {
+        font-size: 22px;
+    }
+
+    .card-metric .cards_text {
+        font-size: 12px;
+    }
+
+    .card-metric .ms-4 {
+        margin-left: 0 !important;
+    }
+}
