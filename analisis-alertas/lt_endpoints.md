@@ -1,75 +1,65 @@
-# Live Tracking · endpoints GET con respuesta JSON
+# Live Tracking · endpoints
 
-## Estado de la captura: BLOQUEADA
+**Relevamiento:** 05/10/2026, en `https://livetracking.ocasa.com` con el usuario del pedido.
 
-No se pudo abrir `https://livetracking.ocasa.com/Login` desde este entorno.
+**Cómo se hizo:**
+- Navegador headless con un candado de red: solo pasaron GET, HEAD y OPTIONS, y un único POST, el del login (`POST /Login`).
+- Todo otro POST, PUT o DELETE fue cortado por el navegador antes de salir.
+- No se hizo clic en ningún botón de acción.
+- Las credenciales se usaron solo como variables de entorno y no se guardaron.
 
-- **Causa:** la política de red del entorno cloud rechaza el host (`CONNECT tunnel failed, response 403`, registrado por el proxy como `connect_rejected` para `livetracking.ocasa.com:443`, 2026-10-03 04:12 UTC).
-- **Qué no se hizo:**
-  - No se inició sesión.
-  - No se usaron ni se guardaron las credenciales en ningún archivo.
-  - No se hizo ninguna llamada a la web, ni GET ni de otro tipo.
-- **Para habilitarlo:** agregar `livetracking.ocasa.com` en *Network access → Allowed domains* del entorno (https://code.claude.com/docs/en/cloud-environments#network-access) y volver a pedir el recorrido.
+## Resultado principal
 
-**Endpoints GET observados en vivo: ninguno (NO ENCONTRADO).**
+**LT no expone ningún endpoint GET que devuelva JSON con datos operativos.** El código de las pantallas (`lt_fuente/js/`) pide **todo** por `POST` con un cuerpo JSON: centros, estadísticas, recorridos, paradas, posiciones GPS y siniestros. Esas llamadas quedaron bloqueadas por la regla de solo GET, así que las pantallas se ven vacías en las capturas.
 
----
+- **Respuestas JSON observadas en vivo: ninguna de LT.** Las únicas fueron de Google Maps, que no son relevantes.
+- **Endpoints GET de LT que figuran en el código** (ninguno se disparó durante la navegación):
+  - `GET /StaticManager/GetPerfiles` (`js/Shared/Common.js:401-403`).
+  - `GET /api/Recorrido/ReporteRecorridos`: la descarga de un informe (`js/dashboard/dashboard.js:86-88`, `js/Recorrido/Recorridos.js:310`).
 
-## Lo único disponible: la copia del Dashboard de LT dentro de la Torre
+Los campos de abajo salen de lo que el JavaScript lee de cada respuesta. **No hay ejemplos de respuesta reales** porque las llamadas no se ejecutaron. Para obtenerlos hace falta autorizar estos POST de lectura (ver "Decisión pendiente").
 
-La Torre trae una copia del Dashboard de LT: `torre/livetracking/livetracking_torre.html`.
+## Endpoints de lectura (todos POST)
 
-- El encabezado de la copia (líneas 2–4) dice que viene de `https://livetracking.ocasa.com/Dashboard/Dashboard`.
-- Según el mismo archivo, se quitaron el menú, el login y **las llamadas al servidor**, y los datos son ilustrativos.
-- Por eso, lo que sigue está **INFERIDO del código de la copia y NO VERIFICADO** contra la web real.
+| Endpoint | Pantalla | Cuerpo que envía | Campos que lee la pantalla | Evidencia |
+|---|---|---|---|---|
+| `POST /StaticManager/GetCentros` | Todas (combo de centros) | perfil / usuario | lista de centros | `js/Shared/Common.js:314-360` |
+| `POST /Dashboard/GetStatistics` | Dashboard | `{Centro, IdPerfil, IdUsuario}` | `cantidades[0]`: `cantidadRecorridos`, `totalEntregas`, `totalRetiros`, `visitadasEnCamino`, `visitadasTotales`, `visitadosEntregas`, `visitadosRetiro`, `geoIncorrecta`, `direccionesSinGeo`, `visitadasFallidasTotales`, `desvioGeo`, `porcentajeConGEOIncorrecta`, `porcentajeConDesvioGeo`; `materiales[]`; `motivosFallidas[]` | `js/dashboard/dashboard.js:150-270` |
+| `POST /Dashboard/GetMaterialReport` | Dashboard: descarga "Sin geo" | centro | detalle para CSV | `dashboard.js:495-510` |
+| `POST /Dashboard/GetFailedVisitReport` | Dashboard: descarga "Visitas fallidas" | centro | detalle para CSV | `dashboard.js:524-540` |
+| `POST /Dashboard/GetGeoErrorReport` | Dashboard: descarga "Geo incorrecta" | centro | detalle para CSV | `dashboard.js:557-572` |
+| `POST /Dashboard/GetGeoDeviationReport` | Dashboard: descarga "Desvío 700 m" | centro | columnas del CSV: Distancia (metros), Centro, Geo Planificada, Geo Real, Recorrido, Ruta, Nro Parada, ID y nombre del transportista, Equipo, Guía, Destinatario, Tipo de servicio, Material… | `dashboard.js:590-604, 669-679` |
+| `POST /api/Recorrido/GetRecorridosTables` | Recorridos | `{Fecha_Planif, Sucursal}` | `ruta`, `recorrido`, `chofer`, `nom_Transportis`, `unidad`, `desc_Tractor`, `sucursal`, `fecha_Planif`, `porcentaje`, **`efectividad`**, `liveTracking`, `km_Fin`, `dateSys_Inicio`, `dateSys_Fin`, `sistema_1/2` (lat/lng) | `js/Recorrido/Recorridos.js:680-790` |
+| `POST /api/Recorrido/GetParadasTables` | Recorridos: paradas | recorrido | `idParada`, **`reasonCode`**, **`env_recb`**, `horaDeGestion`, `position`, `positionReal`, `geolocalizaionCorrecta`, `avisoEnCamino`, `lecturadeDNI`, `motivo`, `submotivo`, `receptor`, `vinculo`, `documento`, `cantBultos`, `direccion`, `localidad`, `provincia`, `tipodeServicio`, `comentarioChofer` | `js/Recorrido/Paradas.js:40-130`, `Recorridos.js:984` |
+| `POST /api/Recorrido/GetParadasDetallesTables` | Detalle de parada | parada | detalle de la gestión | `js/Recorrido/ParadasModal.js:334-336` |
+| `POST /api/Recorrido/GetDigitalPhoto` · `GetConstanciaDigital` · `GetNovedad` | Detalle de parada | parada | foto, constancia, novedad | `ParadasModal.js:221`, `Recorridos.js:465, 516` |
+| `POST /StaticManager/GetGEOData` | Recorridos: mapa en vivo | `{path:"OcasaLiveTracking/<fecha>/<centro>[/<chofer>]"}` (Firebase) | `lastTracking.lat`, `lastTracking.lng` por chofer y recorrido. **No trae la hora del reporte** | `Recorridos.js:1299-1349, 1453-1480` |
+| `POST /api/RecorridoHistorico/ObtenerRecorridoHistorico` · `ObtenerParadasHistorico` · `ObtenerTrakingHistorico` | Históricos | filtros | los mismos campos que Recorridos; traza GPS (`OcasaLiveTrackingHistory/...`) | `js/RecorridoHistorico/Recorridos.js:596, 857, 1354` |
+| `POST /api/Siniestros/ObtenerSiniestros` | Siniestros | fechas, recorrido, dominio | `recorrido`, `descripcionSiniestro`, `patente`, `vehiculo`, `nombreChofer`, `centro`, `observaciones`, `adjuntos`, `fotos` | `js/Siniestros/Siniestros.js:160-175, 319-394` |
+| `POST /StaticManager/GetMessageToDriver` | Mensajes al chofer (historial) | recorrido | mensajes | `Recorridos.js:1198` |
 
-| # | Pantalla / acción | URL del endpoint | Método | Evidencia | Estado |
-|---|---|---|---|---|---|
-| 1 | Dashboard: estadísticas del centro (`LoadStatistics(centro)`) | NO ENCONTRADO | NO ENCONTRADO | `livetracking_torre.html:38` (onchange), `:378` ("misma lógica de cálculo que LoadStatistics del original"), `:396-408` | Inferido |
-| 2 | Botón "Obtener estadísticas" (`#btnGetStatistics`, oculto) | NO ENCONTRADO | NO ENCONTRADO | `livetracking_torre.html:44` | Sin dato |
-| 3 | Descargar informe de recorridos | NO ENCONTRADO | NO ENCONTRADO | `livetracking_torre.html:77` | Sin dato |
-| 4 | Descargar sin geo / visitas fallidas / geo incorrecta / desvío geo | NO ENCONTRADO | NO ENCONTRADO | `livetracking_torre.html:164, 184, 207, 226` | Sin dato |
-| 5 | Clic en un segmento de torta: abre `link` en otra pestaña | NO ENCONTRADO (el campo `link` viene en los datos) | — | `livetracking_torre.html:363-367` | Sin dato |
+## Endpoints que escriben (no se tocaron)
+- `POST /StaticManager/SaveMessageToDriver`: envía un mensaje al chofer (`Recorridos.js:1149`).
+- `POST /Perfiles/ChangePasswordProfile`: cambio de clave (`js/site.js:293`).
+- `POST /Home/Logout` (`Common.js:224`).
 
-### Parámetro de entrada inferido
-- `centro`: código de centro LT, de `A001` (Plaza Logística) a `A055` (CBN I). La lista está en `livetracking_torre.html:39`.
-- La Torre traduce su sucursal al centro de LT con `LTC` (`torre/index.html:1061`).
+## Frecuencia de actualización (latencia)
+- **Dashboard:** se refresca cada **2 minutos** (`dashboard.js:6, 130`).
+- **Recorridos:** el refresco automático (2 min para la lista y 1 min para las posiciones, `Recorridos.js:34-37`) está **comentado** (`:118, :121, :647`). Las posiciones se cargan solo cuando el usuario elige un centro o un chofer.
 
-### Estructura de respuesta inferida (campos que consume `LoadStatistics`)
+## Pantallas sin acceso con este usuario
+Replanificar, Usuarios WEB, ABM Logos y Transportistas redirigen al inicio (`/Home`), por permisos del perfil. Transportistas además devolvió "upstream request failed" en el primer intento.
 
-```json
-{
-  "cantidades": [{
-    "cantidadRecorridos": 0,
-    "totalEntregas": 0,
-    "totalRetiros": 0,
-    "visitadasEnCamino": 0,
-    "visitadasTotales": 0,
-    "visitadosEntregas": 0,
-    "visitadosRetiro": 0,
-    "geoIncorrecta": 0,
-    "direccionesSinGeo": 0,
-    "visitadasFallidasTotales": 0,
-    "desvioGeo": 0,
-    "porcentajeConGEOIncorrecta": 0.0,
-    "porcentajeConDesvioGeo": 0.0
-  }],
-  "materiales": [{ "descripcion": "PAQUETERIA", "cantidad": 0 }],
-  "motivosFallidas": [{ "descripcionMotivo": "AUSENTE", "cantidad": 0 }]
-}
-```
+## Observación de seguridad
+El JavaScript público de Recorridos incluye una **clave de API de Google escrita en el código** (`js/Recorrido/Recorridos.js:1644` y `js/RecorridoHistorico/Recorridos.js:1588`, para la Routes API). En las copias de `lt_fuente/` quedó tapada. Conviene que el equipo de LT confirme que tiene restricción por dominio y por API.
 
-- **Origen de la estructura:** `livetracking_torre.html:390-392`.
-- **Valores:** en 0 a propósito. El ejemplo de la copia es **DEMO**, generado con una semilla en `datosCentro()`, y no se transcribe como dato real.
-- **Materiales de ejemplo:** PAQUETERIA, SOBRES, POSTAL, E-COMMERCE, DOCUMENTACION.
-- **Motivos de ejemplo:** NO SE UBICA DOMICILIO, AUSENTE, RECHAZADO POR DESTINATARIO, DIRECCION INCOMPLETA, COMERCIO CERRADO, ZONA DE RIESGO (`:379-380`).
+## Decisión pendiente
+Para ver datos reales (cantidades, estados de paradas, efectividad, siniestros) y sacar ejemplos de respuesta, habría que permitir estos POST **de lectura**:
+- `GetCentros`
+- `GetStatistics`
+- `GetRecorridosTables`
+- `GetParadasTables`
+- `GetGEOData`
+- `ObtenerSiniestros`
 
-### Cálculos que hace la pantalla con esos campos (copia)
-- **% Uso de EN CAMINO** = `visitadasEnCamino × 100 / visitadasTotales` (`:399`).
-- **% avance de entregas** = `100 − (totalEntregas − visitadosEntregas) × 100 / totalEntregas` (`:400`). El de retiros se calcula igual.
-- **"Desvío GEO 700 mts"** = `porcentajeConDesvioGeo`. El umbral de 700 m está solo en el texto de la pantalla (`:235, :407`); el cálculo es del servidor (NO ENCONTRADO).
-
-## Pendiente cuando haya acceso
-1. Registrar con Playwright las XHR/fetch **GET** con `content-type: application/json`. Para cada una: URL sin tokens, parámetros, campos y un ejemplo recortado y anonimizado.
-2. Ver si las pantallas de alertas en desarrollo exponen endpoints de eventos: unidad detenida, sin GPS, desvío de troncal. Para cada uno, anotar sus umbrales.
-3. Cortar a nivel de red todo POST, PUT o DELETE, salvo el POST del login.
+Seguirían bloqueados los de escritura: `SaveMessageToDriver`, `ChangePasswordProfile` y `Logout`.

@@ -22,8 +22,9 @@ flowchart LR
   subgraph LT["Live Tracking · detecta"]
     A1["TRONCAL_SIN_SALIR [T30]<br/>sin ATD pasado el ETD"]
     A2["TRONCAL_DEMORADA_SALIDA [T29]<br/>+15 aviso / +45 crítico"]
-    A3["UNIDAD_DETENIDA [T31]<br/>más de 20 min (DEMO)"]
-    A4["UNIDAD_SIN_GPS [T33]<br/>25 vs 30/60 min"]
+    A3["UNIDAD_DETENIDA [T31]<br/>más de 20 min (DEMO) · LT hoy no lo calcula [L11]"]
+    A4["UNIDAD_SIN_GPS [T33]<br/>25 vs 30/60 min · sin hora en LT [L11]"]
+    A8["SINIESTRO_UNIDAD [L10]<br/>hoy se gestiona en LT"]
     A5["INCIDENCIA_TRONCAL [T34]<br/>mail de monitoreo, por patente"]
     A6["TRONCAL_ARRIBO_TARDE [F02]<br/>ATA mayor que ETA"]
     A7["TRONCAL_FUERA_DE_RUTA [F03]"]
@@ -38,7 +39,8 @@ flowchart LR
   BIT[("Bitácora<br/>dueño: Tráfico")]
   A1 -->|P1| BIT
   A2 -->|"P2 / P1 si más de 45"| BIT
-  A3 -->|P1| BIT
+  A3 -.->|P1| BIT
+  A8 -.->|"P1 · hoy no llega"| BIT
   A4 -->|P3| BIT
   A5 --> BIT
   A6 -.-> BIT
@@ -53,7 +55,7 @@ flowchart LR
   classDef lt fill:#d6f0f5,stroke:#0099a8,color:#0e1214
   classDef tc fill:#e8e0fb,stroke:#6f4fd1,color:#0e1214
   classDef bit fill:#eceff1,stroke:#4e595d,color:#0e1214
-  class A1,A2,A3,A4,A5,A6,A7,N8N lt
+  class A1,A2,A3,A4,A5,A6,A7,A8,N8N lt
   class B1,B2,B3,B4 tc
   class BIT,R1 bit
 ```
@@ -62,6 +64,7 @@ flowchart LR
 - Todo lo que pasa sobre una troncal o una unidad lo tiene que detectar LT. Hoy la Torre calcula la demora por troncal (T29, T30) y además el color de la troncal en el mapa depende solo de las excepciones abiertas (`:1098`), no de la demora.
 - Antes de unificar hay que resolver dos conflictos. La tolerancia es de 15 min en el código y de 20 min en el KPI. La definición de "a tiempo" mide el arribo (ATA) y el código mide la salida (ATD).
 - La única alerta que hoy entra sola a la Bitácora es la unidad detenida (E-2293, simulada en `:2645`). Ese es el patrón a replicar.
+- **La web de LT hoy no puede detectar** "unidad detenida" ni "sin GPS": la posición en vivo trae solo lat/lng, sin hora (`lt_fuente/js/Recorrido/Recorridos.js:1453-1480`), y el refresco automático está desactivado. Los siniestros se gestionan dentro de LT y no llegan a la Bitácora.
 
 ---
 
@@ -118,7 +121,9 @@ flowchart LR
     A4["CHOFER_VISITAS_FALLIDAS [F05]<br/>30% (texto de E-2283)"]
     A5["RECORRIDO_SIN_INICIAR [F06]"]
     A6["GEO_INCORRECTA [L06]"]
-    A7["Visita fallida por motivo [L04]"]
+    A7["Visita fallida por motivo [L04]<br/>fallida = todo lo que no es Z4/Z1/RE [L09]"]
+    A8["RECORRIDO_EFECTIVIDAD_BAJA [L08]<br/>naranja 90–95 · rojo menos de 90"]
+    A9["SINIESTRO_UNIDAD [L10]"]
   end
   subgraph TC["Torre · agrega"]
     B1["SUCURSAL_EN_RIESGO<br/>SLA 95/93 + N eventos de LT"]
@@ -131,6 +136,9 @@ flowchart LR
   A1 & A2 -->|"P2 / P3"| BIT
   A1 & A5 -.->|"3 o más en la misma sucursal"| B1
   A4 -.-> B2
+  A8 -.->|"conflicto 95/90 vs 88/85"| B2
+  A8 -.->|P3| BIT
+  A9 -.->|"P1 · hoy se gestiona en LT"| BIT
   A7 --> B3
   A3 --> B4
   A6 -.->|"huérfana hoy"| BIT
@@ -140,7 +148,7 @@ flowchart LR
   classDef lt fill:#d6f0f5,stroke:#0099a8,color:#0e1214
   classDef tc fill:#e8e0fb,stroke:#6f4fd1,color:#0e1214
   classDef bit fill:#eceff1,stroke:#4e595d,color:#0e1214
-  class A1,A2,A3,A4,A5,A6,A7 lt
+  class A1,A2,A3,A4,A5,A6,A7,A8,A9 lt
   class B1,B2,B3,B4,B5 tc
   class BIT,R1 bit
 ```
@@ -149,6 +157,7 @@ flowchart LR
 - Es el proceso con más indicadores con semáforo en la Torre (T11–T26) y casi ninguno abre una excepción: son HUÉRFANAS.
 - LT tiene el dato por parada y por chofer (visitas fallidas, geo, desvío de 700 m) pero no lo alerta. Ese dato debería alimentar la alerta agregada SUCURSAL_EN_RIESGO, que hoy no existe (F01).
 - Hay que unificar la lista de motivos de no entrega entre LT y la Torre.
+- LT ya pinta la efectividad de cada recorrido (verde ≥95%, naranja 90–95%, rojo <90%, `lt_fuente/js/Recorrido/Recorridos.js:745-764`) pero no la manda a ningún lado. Además usa otra vara que la Torre (88/85 en 1er intento): es un CONFLICTO a resolver.
 
 ---
 

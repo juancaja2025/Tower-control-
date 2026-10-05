@@ -1,0 +1,298 @@
+ CAPACITACIÓN
+WEB LIVE TRACKING
+INTRODUCCIÓN
+Guía Rápida del Portal Web LIVE TRACKING
+
+ Objetivo y alcance
+ Este portal web ha sido desarrollado para optimizar la gestión operativa
+ diaria del personal de transporte, ofreciendo una visualización completa
+ y en tiempo real de la actividad logística. Nuestro propósito es facilitar la
+ toma de decisiones estratégicas, incrementar la precisión en la
+ planificación de rutas y garantizar la máxima eficiencia en las entregas.
+ La plataforma proporciona acceso a tres componentes clave: Mapas
+ Interactivos para la monitorización de rutas, datos detallados de cada
+ recorrido, y un Resumen Ejecutivo con métricas de rendimiento. Es
+ importante destacar que, en el marco de nuestra mejora continua,
+ ciertas funciones podrían ser actualizadas o ajustadas para optimizar la
+ experiencia del usuario.
+Onboarding
+ONBOARDING   01.
+
+             Navegación al Portal
+             Diríjase a la URL de acceso directo:
+             https://webtransportistas.ocasa.com/Login. Esto
+             abrirá la interfaz de inicio de sesión.
+
+
+
+             02
+             .
+             Ingreso de Credenciales
+             Complete los campos utilizando su dirección de
+             mail como identiﬁcador de usuario y la
+             contraseña de seguridad asignada.
+
+
+             03
+             .
+             Validación y Acceso
+             Finalice el proceso presionando el botón
+             "Ingresar". Tras la validación, el sistema le
+             redirigirá automáticamente a su panel de
+             control.
+Monitorización de Recorridos en Tiempo Real
+MONITORIZACIÓN DE
+RECORRIDOS EN TIEMPO REAL
+                            01.
+
+                            MONITORIZACIÓN DE
+                            RECORRIDOS EN TIEMPO REAL
+                            La pantalla principal del portal está estructurada
+                            en dos áreas operacionales que trabajan de
+                            forma interconectada para facilitar la gestión y el
+                            seguimiento:
+
+                            1. Panel de Lista de Recorridos (Lateral
+                            Izquierdo)
+                            Este módulo es la central de gestión operativa.
+                            Contiene la lista completa y ﬁltrable de todos los
+                            recorridos asignados, mostrando un resumen de
+                            su estado y progreso.
+
+                            2. Mapa Interactivo (Lateral Derecho)
+                            Este módulo funciona como el centro de
+                            visualización geográﬁca. Ofrece el contexto
+                            espacial de las rutas, paradas y la ubicación de
+                            las unidades en tiempo real.
+PANEL DE LISTA DE RECORRIDOS
+
+                               01.
+
+                               Panel de Lista de Recorridos
+                               (Lateral Izquierdo)
+                               Este módulo funciona como el Centro de
+                               Gestión Operacional.
+
+                               Función: Permite buscar, ﬁltrar y revisar de
+                               forma concisa todos los trabajos asignados.
+
+                               Contenido: Cada elemento de la lista (Tarjeta de
+                               Recorrido) resume los datos críticos del trabajo,
+                               incluyendo la identiﬁcación de la ruta, el
+                               responsable, el estado actual y la barra de
+                               progreso.
+
+                               Interacción: Al seleccionar un recorrido en la
+                               lista, el mapa se sincroniza y se enfoca en esa
+                               ruta.
+Mapa Interactivo
+
+                   01.
+
+                   Mapa Interactivo (Lateral
+                   Derecho)
+                   Este módulo es el Centro de Visualización en
+                   Tiempo Real.
+
+                   Función: Proporciona el seguimiento geográﬁco
+                   y el contexto visual de la operación.
+
+                   Contenido: Muestra las rutas, las paradas
+                   marcadas con el código de colores según su
+                   estado (pendiente-color calypso,
+                   completado-color verde, no entregado-color
+                   rojo), y la ubicación en vivo de las unidades.
+
+                   Utilidad: Incluye controles de vista
+                   (Mapa/Satélite) y zoom para una navegación
+                   eﬁciente.
+Estado y Progreso Detallado del Recorrido
+Mapa Estado y Progreso Detallado
+del Recorrido
+                                   01.
+
+                                   ESTADO Y PROGRESO
+                                   DETALLADO DEL RECORRIDO
+                                   Esta vista se activa al seleccionar un recorrido
+                                   especíﬁco desde la pantalla principal, ofreciendo
+                                   un desglose completo de las tareas asociadas.
+                                   Su objetivo es permitir la supervisión detallada
+                                   del avance del trabajo, manteniendo la
+                                   coherencia visual con el mapa.
+
+                                   PANEL DE DETALLES DEL RECORRIDO (Lateral
+                                   Izquierdo)
+                                   Este módulo es el centro de gestión y monitoreo
+                                   de tareas, donde se detalla el estado de cada
+                                   parada individual.
+
+                                   MAPA INTERACTIVO (Lateral Derecho)
+                                   Este módulo es la visualización gráﬁca de la ruta
+                                   en ejecución, enfocada únicamente en el
+                                   recorrido seleccionado.
+ESTADO Y PROGRESO         01.
+
+DETALLADO DEL RECORRIDO   PANEL DE DETALLES DEL
+                          RECORRIDO (Lateral Izquierdo)
+                          Este módulo es el centro de gestión y monitoreo
+                          de tareas, donde se detalla el estado de cada
+                          parada individual.
+
+                          Buscador de Paradas: Permite ﬁltrar
+                          rápidamente las paradas dentro del recorrido
+                          por número de envío, dirección o destinatario.
+
+                          Pestañas de Estado: Organiza las paradas en
+                          dos categorías clave:
+
+                            ●     En Curso: Muestra las paradas que aún
+                                  están pendientes de realizar por el
+                                  transportista.
+                            ●     Transaccionadas: Incluye las paradas
+                                  que el transportista ya ha gestionado
+                                  (ﬁnalizadas o fallidas).
+
+                          Tarjeta de Parada: Cada tarjeta ofrece el detalle
+                          del envío (código, dirección y cantidad de
+                          bultos), además de un indicador de estado (Ej:
+                          Pendiente). Los números de las tarjetas se
+                          corresponden con los paradas en el mapa.
+DETALLE DEL RECORRIDO
+TRANSACCIONADO          01.
+
+                        DETALLE DE LA SECCIÓN
+                        "TRANSACCIONADAS"
+                        La sección "Transaccionadas" incluye todas las
+                        paradas que el transportista ya gestionó. Está
+                        organizada en dos tarjetas (Cards) distintas para
+                        una mejor visualización:
+
+                        Paradas ﬁnalizadas: Muestra las entregas o
+                        retiros gestionados con éxito.
+
+
+
+
+                        Paradas Fallidas: Muestra aquellas que el
+                        transportista no pudo completar.
+REPORTE RESUMIDO DE LA   01.
+
+                         Vista detallada de la parada
+TRANSACCIÓN LOGÍSTICA
+                         Al seleccionar una parada, el operario accede al Resumen
+                         Operativo, una vista integral para validar y auditar la gestión
+                         realizada por el transportista.
+
+                         El resumen incluye tres bloques clave de información:
+
+                         Datos de la Parada: Información de cabecera que permite
+                         validar la orden (Dirección, Servicio, Bultos).
+
+                         Gestión Conﬁrmada: Muestra el resultado ﬁnal de la gestión
+                         (Motivo), el Nro. de Documento asociado y la conﬁrmación
+                         de la Geolocalización planiﬁcada y la real.
+
+                         Evidencia Digital: Se visualizan las imágenes de respaldo
+                         capturadas en el punto de entrega/retiro (DNI, Firma) que
+                         conﬁrman la transacción.
+
+                         Finalmente, esta sección proporciona la funcionalidad de
+                         descargar la Constancia Digital. Este documento es la
+                         certiﬁcación oﬁcial del servicio, consolidando todos los datos
+                         y la evidencia digital en un único comprobante.
+Dashboard
+Panel de Control de Gestión Logística:
+Reporte Diario Operativo
+                                     01.
+
+                                     Panel de Control de Gestión
+                                     Logística
+                                         Este es el Panel de Control Operativo, una
+                                         herramienta centralizada para monitorear en
+                                         tiempo real la productividad y las desviaciones
+                                         de un centro de distribución o sucursal
+                                         especíﬁca (en el ejemplo, [A001] - SUCURSAL
+                                         IRIARTE).
+
+                                         El objetivo principal es ofrecer una visión
+                                         ejecutiva de la jornada, cuantiﬁcando los
+                                         recorridos y las transacciones (entregas/retiros) y,
+                                         simultáneamente, identiﬁcando las principales
+                                         ineﬁciencias o fallas a través de indicadores clave
+                                         de gestión (KPIs), como las visitas fallidas y las
+                                         desviaciones de geolocalización.
+Sección de Indicadores de Productividad
+(KPIs Ejecutivos)                  01.
+
+                                  KPIs de Productividad y
+                                  Cumplimiento
+                                  Este bloque se enfoca en la cantidad y el rendimiento
+                                  general de la operación.
+
+                                  Total de Recorridos: Muestra la cantidad total de
+                                  rutas o recorridos planiﬁcados y ejecutados. Es un
+                                  indicador de la capacidad operativa diaria.
+
+                                  Total de Entregas: Cifra total de entregas
+                                  concretadas, mostrando el porcentaje de efectividad
+                                  sobre el total de gestiones. Es el KPI primario de
+                                  cumplimiento de outbound.
+
+                                  Total de Retiros: Cifra total de retiros completados. Es
+                                  el KPI primario de cumplimiento de logística inversa.
+
+                                  Uso de en camino: Indicador de eﬁciencia de
+                                  utilización. Mide el porcentaje de capacidad o tiempo
+                                  que el personal o vehículos están "en ruta" o "en
+                                  camino" con respecto al tiempo total operativo.
+Sección de Anomalías y Desvíos
+                                 01.
+Operacionales
+                                 Identiﬁcación y Clasiﬁcación de
+                                 Fallas
+                                 Este bloque identiﬁca las causas de las fallas y
+                                 los problemas de input o output en la operación.
+
+                                 Sin Geo por material: Muestra la distribución de
+                                 las paradas que no tienen una geolocalización
+                                 cargada por ruteo, categorizadas por el tipo de
+                                 material/servicio. Ayuda a identiﬁcar qué tipo de
+                                 servicio genera más inconsistencias de datos.
+
+                                 Visitas Fallidas: Gráﬁco de distribución que
+                                 detalla los motivos especíﬁcos por los cuales las
+                                 entregas o retiros no se pudieron concretar (Ej:
+                                 No responde llamado, Retraso, Zona peligrosa,
+                                 etc.). Es fundamental para la acción correctiva.
+
+                                 Función de Descarga: Cada gráﬁco incluye el
+                                 botón "Descargar informe". Al hacer clic, el
+                                 usuario puede obtener los datos brutos de la
+                                 anomalía en formato de reporte para un
+                                 análisis más detallado fuera del dashboard.
+Sección de Control de Calidad de la   01.
+Georreferenciación                    Métricas de Precisión y Calidad
+                                      Geográﬁca
+                                      Este bloque evalúa la precisión de los datos
+                                      geográﬁcos que utiliza el sistema.
+
+                                      Con marca de Geo Incorrecta: Muestra el total
+                                      de paradas donde el transportista marcó la
+                                      geolocalización como inconsistente (Geo
+                                      Incorrecta vs. Geo Correcta). Indica la calidad de
+                                      las coordenadas utilizadas.
+
+                                      Desvío GEO 700 mts: Este es un KPI de
+                                      precisión. Mide la cantidad de paradas cuya
+                                      ubicación de entrega real diﬁere en 700 metros
+                                      o más de la coordenada inicial planiﬁcada. Es
+                                      crucial para auditar la ejecución en campo y la
+                                      calidad de la planiﬁcación de rutas.
+
+                                      Función de Descarga: Cada gráﬁco incluye el
+                                      botón "Descargar informe". Al hacer clic, el
+                                      usuario puede obtener los datos brutos de la
+                                      anomalía en formato de reporte para un
+                                      análisis más detallado fuera del dashboard.
+Muchas gracias
+

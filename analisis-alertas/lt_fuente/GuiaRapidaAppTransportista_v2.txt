@@ -1,0 +1,604 @@
+                          2026
+
+        Guía rápida
+APP OCASA TRANSPORTISTAS V2
+INTRODUCCIÓN
+Guía para comprender las funciones de la app OCASA Transportistas V2
+
+
+
+
+ Objetivo y alcance
+ Esta guía está diseñada para ayudar a los usuarios
+ y al personal operativo de la planta a comprender
+ y utilizar eficazmente la nueva versión de la app
+ OCASA Transportistas V2. Nuestro objetivo es
+ optimizar sus operaciones diarias y mejorar la
+ precisión de las entregas.
+ Esta guía abarca las funciones esenciales y detalla
+ las nuevas funciones anunciadas oficialmente por
+ el equipo de Productos Digitales.
+
+ Durante el desarrollo y la implementación, algunas
+ funciones podrían modificarse o desactivarse
+ temporal o permanentemente.
+
+
+ Organización y soporte
+ Los temas están organizados siguiendo una secuencia lógica de uso, que refleja el flujo
+ de trabajo real. La estructura del contenido te ayuda a encontrar rápidamente la
+ información que necesitás.
+
+
+
+     Contacto y asistencia
+     Problemas de Login o Inicio de app:
+     Comunicate con la Mesa de Ayuda para asistencia inmediata.
+
+     Problemas de uso Rutas, Recorridos, Paradas):
+     Contactá directamente a Operaciones para resolver el inconveniente.
+INSTALACIÓN Y PERMISOS
+Búsqueda e instalación de la aplicación
+Esta sección te guiará para encontrar y descargar la aplicación OCASA
+Transportistas V2 desde la tienda oficial de Android.
+
+
+        01.                                 02.
+
+
+        Buscar la Aplicación                Realizar la búsqueda
+        en Play Store
+
+
+                                            OCASA transportista V2
+
+
+
+
+        En el dispositivo
+        Android, selecciona el             En la barra de búsqueda,
+        ícono de la Google Play            escribe OCASA
+        Store.                             Transportistas V2 y
+                                           presiona la lupa para
+                                           buscar.
+
+
+        03                                  04
+                                            .
+
+        Identiﬁcar la                       Descarga e instalación
+        aplicación oﬁcial
+
+
+
+
+                                             Presionar Instalar. Al
+                                             finalizar la descarga,
+        En los resultados, elige el          selecciona Abrir o busca
+        ícono de OCASA                       la app en tu lista para
+        Transportistas V2 para ir a          iniciarla.
+        la página de instalación.
+Habilitación de permisos
+Esta aplicación necesita acceder a tu ubicación, cámara,
+micrófono, llamadas telefónicas y notificaciones para poder
+gestionar correctamente, las entregas los retiros y comunicaciones.
+
+ 01.                             02                                03
+                                 .                                 .
+ Habilitar cámara                Habilitar ubicación               Habilitar micrófono
+
+
+
+
+ Presiona "Mientras la app                                        Presiona "Mientras la app
+ está en uso" para habilitar                                      está en uso" para habilitar el
+ el dictado por voz y escribir                                    dictado por voz y escribir
+ mensajes rápidamente sin                                         mensajes rápidamente sin
+ usar el teclado.                                                 usar el teclado.
+
+                                 Presiona "Mientras la app está
+                                 en uso" para el seguimiento y
+                                 gestión óptima de tareas.
+
+
+
+  04                              05
+  .                               .
+  Habilitar llamadas              Habilitar envío de
+  telefónicas                     notiﬁcaciones
+
+                                                                              ADVERTENCIA
+
+                                                                        Si no autorizas los
+                                                                        permisos solicitados, la
+                                                                        aplicación no podrá
+                                                                        funcionar correctamente.
+                                                                        Podrían generarse
+                                                                        errores críticos en la
+                                                                        gestión de tus tareas.
+
+  Presiona "Permitir" para       Presiona "Permitir" para
+  que la app pueda realizar      recibir notificaciones en
+  llamadas al cliente.           tiempo real de la aplicación.
+ACCESO AL SISTEMA
+Acceso al sistema
+
+
+
+
+01.                                 02                                 03
+                                    .                                  .
+Encender el teléfono                Ingresar a la aplicación           Introducir Credenciales
+Asegúrate de que el                 Presiona el ícono "OCASA          Ingresa tu Usuario y
+dispositivo esté                    Transportistas " en la            Contraseña asignada.
+encendido y                         pantalla principal para           Luego, presiona el botón
+desbloqueado.                       iniciar la aplicación.            INICIAR.
+
+
+      Advertencia: No borres la caché. La limpieza puede generar errores de visualización o pérdida
+      de datos no guardados.
+TU CREDENCIAL QR
+Tu credencial QR
+Este QR es tu identificación digital. Sirve para validar tus
+datos y los del vehículo. Puede ser requerido al ingreso o en
+diferentes puntos del proceso operativo según la sucursal.
+
+
+
+
+                01.                                                 02
+                                                                    .
+
+
+
+
+   Ingresa a la aplicación y, desde                    En la pantalla de "CÓDIGO QR",
+   el menú lateral, toca en                            dentro de la pestaña "MI CÓDIGO",
+   'Código QR'.                                        aparecerá tu pase listo para ser
+                                                       presentado.
+
+
+
+
+    Importante: Verifica que el dominio que aparece debajo del código QR coincida
+    exactamente con la patente del vehículo que estás conduciendo.
+Registro de nuevo dominio
+Ingresá el dominio para registrar la nueva unidad con la que
+vas a operar.
+
+
+
+               01.                                                   02
+
+
+
+
+  Ingresá el dominio para dar de alta y                Confirmado el dominio, se
+  habilitar la unidad.Finalizá el                      generará el QR con la patente
+  proceso presionando Generar QR                       ingresada para que el
+  para asignar el vehículo al                          transportista pueda operar.
+  transportista.
+
+
+
+
+    Importante: Corroborá que la patente ingresada coincida con la unidad física antes de
+    generar el QR para evitar problemas en el proceso operativo.
+INICIO DEL RECORRIDO
+Inicio del Recorrido
+
+
+
+
+01.                         02.                           03
+                                                          .
+Revisión de la Ruta         Descargar hoja de ruta        Iniciar la ruta
+Conﬁrme que el estado       Para asegurar la              Presione el botón "Iniciar
+sea PENDIENTE.              continuidad del trabajo,      recorrido" .
+Veriﬁque los datos:         descargá la Hoja de Ruta al
+Visitas, Órdenes y Fecha.   inicio del día. De esta
+                            forma, si perdés la
+                            conexión a internet, tenés
+                            un backup y podés seguir
+                            gestionando tus paradas
+                            sin interrupciones.
+HOJA DE RUTA
+Hoja de ruta pdf
+
+
+                   HOJA DE RUTA
+                   Es el documento esencial del
+                   transportista. Contiene el listado
+                   completo de pedidos, direcciones de
+                   entrega y cualquier instrucción
+                   especial.
+
+                   Al descargarla en la aplicación,
+                   funciona como un respaldo que te
+                   permite seguir consultando toda la
+                   información de la ruta y registrar las
+                   gestiones, incluso cuando no tienes
+                   conexión a Internet (sin señal).
+LISTA DE PARADAS
+Lista de paradas
+
+
+
+
+01.                           02                         03
+                              .                          .
+Revisar la vista general      Corroborar datos           Tocar para Gestionar
+Mirá la lista para tener un   Detente en cada tarjeta    Hacé touch sobre la
+panorama de la ruta.          (parada) y observá los     tarjeta de la parada que
+                              campos de datos , bultos   vas a trabajar en el
+                              y que tipo de operación.   momento.
+PRE-LLEGADA A LA PARADA
+Pre-llegada a la parada
+
+
+
+
+01.                                         03
+                                            .
+Revisar la información                      Iniciar navegación
+
+Al tocar la tarjeta de la parada, veriﬁcá   Presioná el botón "NAVEGAR".
+todos los datos de la orden.
+
+ 02.                                        04
+
+ Avisar al destinatario                     Empezar la operación
+
+ Antes de ponerte en marcha, presioná el    Una vez que llegues al destino y
+ botón "EN CAMINO".                         presioná el botón de la operación
+                                            que vas a realizar (Entrega , retiro o
+                                            masivo).
+Contacto rápido
+
+
+
+
+01.                         02                          03
+                            .                           .
+Revisar la información      Contactar al destinatario   Medios de Contacto
+
+Al tocar la tarjeta de la   Si está disponible,         Podés utilizar la opción
+parada, veriﬁcá todos los   presioná el ícono del       de llamada de teléfono
+datos de la orden.          teléfono.                   o llamada por
+                                                        whatsapp.
+EN CAMINO
+En camino
+
+
+
+
+01.                                     02
+                                        .
+INFORMAR SALIDA                         ESTADO DE CONFIRMACIÓN
+
+Presioná el botón "EN CAMINO"           Una vez pulsado, el botón
+justo antes de salir hacia la parada.   cambiará su apariencia a color
+El sistema envía un aviso               gris y aparecerá un ✅. Esto
+automático al destinatario,             signiﬁca que el mensaje ha sido
+notiﬁcando que estás en camino          enviado y el destinatario ya fue
+para la entrega o retiro.               notiﬁcado de tu aproximación.
+                                        ¡Ya podés iniciar la navegación!.
+NAVEGAR
+Navegar
+
+
+
+
+01.                                   02
+                                      .
+PULSAR "NAVEGAR"                      RUTA AUTOMÁTICA
+
+Presioná el botón "NAVEGAR". Esto     El sistema marcará
+iniciará de inmediato tu aplicación   automáticamente el punto de la
+de navegación predeterminada          parada como destino.
+(Waze, Google Maps, etc.).            Simplemente seguí las
+                                      indicaciones de tu navegador
+                                      para ser dirigido de manera
+                                      eﬁciente al lugar exacto de la
+                                      entrega o retiro.
+OPERACIONES DE PARADA
+Entrega y Retiro
+
+
+
+                   01.
+
+                   REVISIÓN DE DATOS DE LA ORDEN
+
+                   Revisa en la parte superior la Tarjeta de
+                   Información para conﬁrmar el Tracking,
+                   la Dirección y la Cantidad de Bultos
+                   antes de interactuar con el cliente.
+
+
+                   02
+                   .
+                   SELECCIÓN DEL ESTADO DE
+                   OPERACIÓN
+                   Indicá el resultado de la visita
+                   antes de seguir con la
+                   veriﬁcación.
+                   Opciones:
+
+                   EXITOSA: Si lograste Entregar,
+                   Retirar o completar la operación
+                   Masivo.
+
+
+
+
+                   FALLIDA: Si no pudiste completar
+                   la tarea.
+
+
+
+
+                   En cualquier de las operaciones
+                   el sistema te pedirá seleccionar
+                   un motivo de la lista.
+Entrega y Retiro
+
+
+
+
+                                    Geolocalización correcta
+                                    ¿Por qué activarlo?
+                                    Si lo marcas como SÍ, confirmas que la ubicación es
+                                    perfecta.
+                                    Tu beneficio: La próxima vez que entregues en este
+                                    punto, el sistema te guiará con máxima precisión,
+                                    ahorrándote tiempo y evitando desvíos
+                                    innecesarios.
+
+
+
+03                                              04
+
+
+CARGA DE DATOS DEL RECEPTOR                     SECCIÓN DE VERIFICACIÓN
+
+Registrá la identidad de la persona que         Documentá la visita con la evidencia
+recibe o entrega la carga. Todos estos          solicitada.
+campos son obligatorios.
+                                                FOTO: Simplemente, lee el título de la
+Nombre del Receptor: Nombre                     foto en pantalla. Te dice qué debes
+completo de la persona.                         fotograﬁar.
+
+DNI: Ingresá el número, o usá la opción         FIRMA: Solicitá la ﬁrma digital en la
+de lectura de dni.                              pantalla del dispositivo.
+
+Palabra Clave: Si la parada lo requiere,        Comentarios: Usá este campo para
+ingresá la palabra de seguridad que te          aclarar cualquier situación especial de
+debe proporcionar el destinatario.              la visita.
+Entrega y Retiro
+
+
+
+
+  05
+
+  FINALIZAR Y ENVIAR
+
+  Una vez que todos los campos obligatorios estén completos, presioná el
+  botón FINALIZAR.
+  La parada se registra como gestionada, se mueve a la lista de Finalizados y
+  podés continuar con la siguiente parada.
+OPERACIONES DE PARADA MASIVA
+Masivo
+
+
+
+
+01                                     02
+
+
+REVISAR LA INFORMACIÓN                 NAVEGAR POR LAS TAREAS
+
+Al tocar la tarjeta de la parada,      Usá las solapas para una mejor
+veriﬁcá todos los datos de la orden.   visibilidad de lo que tenés que hacer:
+
+                                       TODOS: Muestra la lista completa y
+                                       combinada de Retiros y Entregas.
+
+                                       RETIROS: Muestra solo las cargas
+                                       que debés retirar en ese punto.
+
+                                       ENTREGAS: Muestra solo las cargas
+                                       que debés dejar en ese punto.
+Masivo
+
+
+
+
+ 03                                      04
+
+
+ GESTIONAR CADA BULTOS                   FINALIZAR LA PARADA MASIVA
+ INDIVIDUALMENTE
+
+ En la solapa correspondiente,           Una vez que todas las tareas se han
+ marcá el checkbox de cada numero        completado (todos los bultos
+ de envio.                               entregados/retirados están
+ Cuando un bulto es entregado o          chequeados), procedé a completar
+ retirado con éxito, activá su           la veriﬁcación y presioná el botón
+ checkbox correspondiente.               SIGUIENTE.
+
+ Si es entrega: Chequeá solo los
+ bultos que efectivamente dejas.
+
+ Si es retiro: Chequeá solo los bultos
+ que efectivamente retiras.
+Masivo
+
+
+
+         01.
+
+         REVISIÓN DE DATOS DE LA ORDEN
+
+         Revisa en la parte superior la tarjeta de
+         Información para conﬁrmar el Tracking,
+         la Dirección y la Cantidad de Bultos
+         antes de interactuar con el cliente.
+
+
+         02
+         .
+         SELECCIÓN DEL ESTADO DE
+         OPERACIÓN
+         Indicá el resultado de la visita antes
+         de seguir con la veriﬁcación.
+         Opciones:
+
+         EXITOSA: Si lograste Entregar,
+         Retirar o completar la operación
+         Masivo.
+
+
+
+
+         FALLIDA: Si no pudiste completar la
+         tarea.
+
+
+
+
+         En cualquier de las operaciones el
+         sistema te pedirá seleccionar un
+         motivo de la lista.
+Masivo
+
+
+
+
+                                    FINALIZAR Y GESTIÓN PARCIAL
+                                    Si gestionaste SOLO UNA PARTE de los bultos
+                                    (dejando bultos sin chequear), la parada
+                                    quedará en estado de GESTIÓN PARCIAL en
+                                    tu lista, indicando que hay tareas pendientes.
+
+
+
+03                                           04
+
+
+CARGA DE DATOS DEL RECEPTOR                  SECCIÓN DE VERIFICACIÓN
+
+Registrá la identidad de la persona          Documentá la visita con la evidencia
+que recibe o entrega la carga.Todos          solicitada.
+estos campos son obligatorios.
+                                             FOTO: Simplemente, lee el título de la
+Nombre del Receptor: Nombre                  foto en pantalla. Te dice qué debes
+completo de la persona.                      fotograﬁar.
+
+DNI: Ingresá el número, o usá la             FIRMA: Solicitá la ﬁrma digital en la
+opción de lectura de dni.                    pantalla del dispositivo.
+
+Palabra Clave: Si la parada lo requiere,     Comentarios: Usá este campo para
+ingresá la palabra de seguridad que te       aclarar cualquier situación especial de
+debe proporcionar el destinatario.           la visita.
+Masivo - Gestión parcial
+
+
+
+
+05                                 06
+
+
+ACCEDER A LAS TAREAS               COMPLETAR LAS TAREAS
+FALTANTES                          RESTANTES
+Hacé touch en la tarjeta de la     Una vez en el punto de la parada,
+parada "Gestión Parcial".          realiza las tareas pendientes.
+                                   Marcá el checkbox de cada bulto
+La aplicación te mostrará          que acabas de gestionar con éxito y
+nuevamente las solapas RETIROS     cargar todos los datos.
+y/o ENTREGAS, pero solo con los
+bultos que quedaron sin chequear
+en la visita.
+HISTORIAL DE PARADAS Y RESUMEN
+Historial de paradas ﬁnalizadas
+
+
+                                                                            EDICIÓN
+
+
+
+
+                                                 ESTADO DE SINCRONIZACIÓN
+                                                    (proceso automático)
+
+
+
+                                 ÍCONO DE EDICIÓN (       )
+                                 Este ícono te permite modificar o corregir un dato si notaste un
+                                 error inmediatamente después de finalizar la parada Ej: corregir el
+                                 DNI o el nombre del receptor). Usá esta opción solo si es
+                                 estrictamente necesario.
+
+
+
+
+01.                         02                                    03
+                            .                                     .
+REVISIÓN DE LA              ESTADOS DE                            VER RESUMEN DE LA
+TARJETA                     SINCRONIZACIÓN                        PARADA
+Cada tarjeta te muestra     El indicador reﬂeja el               Al hacer touch en la
+un resumen rápido del       estado de la transmisión.            tarjeta, accedés al
+trabajo: número de envío,   'Sincronizada' signiﬁca              resumen completo de la
+hora POD y el motivo.       que los datos se                     parada. Podrás revisar
+                            validaron exitosamente               todos los datos de la
+                            con el servidor central              parada.
+                            (proceso automático).
+Resumen de la parada
+
+
+
+
+01                                  02
+
+
+ACCEDER AL RESUMEN                  REVISIÓN INTEGRAL DE LA
+                                    GESTIÓN
+En la lista de "RUTAS               Revisá las tres secciones principales
+FINALIZADAS", hacé touch sobre la   de la pantalla.
+tarjeta de la parada que deseas
+consultar.                          - Información de la Orden.
+                                    - Geolocalización.
+                                    - Información de la gestión.
+GESTIÓN DE NUEVAS PARADAS
+Gestión de nuevas paradas
+
+
+
+
+                            ¿Qué pasa si me agregan una parada?
+                            Te pueden agregar una parada durante el recorrido o
+                            después de finalizar el recorrido:
+                            Reapertura Automática: si el recorrido está finalizado se
+                            vuelve a abrir solo.
+                            Gestión Directa: Vas a ver la lista actualizada (con la
+                            etiqueta "Nueva Parada") y ya podés empezar a
+                            transaccionar la nueva orden.
+
+
+
+
+01                                       02
+
+
+RECEPCIÓN DE LA NOTIFICACIÓN             IDENTIFICACIÓN DE LA NUEVA
+                                         PARADA EN LA LISTA
+Mientras estás ejecutando tu             La nueva orden se insertará siempre
+recorrido, la aplicación te enviará      al ﬁnal de la lista de paradas de tu
+una Notiﬁcación Push al agregarse        recorrido activo.
+una nueva parada a tu lista. Revisá      Identiﬁcá la nueva parada gracias a
+la lista de paradas del recorrido.       la leyenda "Nueva Parada" que
+                                         aparecerá visiblemente en la tarjeta
+                                         (card) de la orden.
+Muchas gracias
+
