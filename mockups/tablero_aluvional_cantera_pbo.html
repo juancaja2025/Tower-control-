@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Control Tower · YPF Añelo</title>
+<title>Control Tower · Aluvional</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -215,29 +215,44 @@ tr:not(.s-ok) .mbar i{background:var(--sc)}
 .menu button:hover{background:var(--hov)}
 .toast{position:absolute;z-index:50;left:50%;bottom:22px;transform:translateX(-50%);background:var(--hov2);border:1px solid var(--bd2);border-radius:4px;padding:10px 16px;font-size:15px;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
+
+/* hoja de ruta y ventanas operativas */
+.reco{position:absolute;right:10px;bottom:86px;width:330px;display:flex;flex-direction:column;gap:4px;font-size:12.5px;line-height:1.35;color:var(--t2);background:color-mix(in srgb,var(--surf) 92%,transparent);border:1px solid var(--bd);border-left:3px solid var(--warn);border-radius:4px;padding:8px 10px;pointer-events:none}
+.reco[hidden]{display:none}
+.reco b{color:var(--t1);font-size:13px}
+.reco .v80{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:2.5px solid var(--crit);color:var(--t1);font-size:9.5px;font-weight:800;margin-right:6px;vertical-align:middle}
+.win{display:flex;gap:14px;font-size:14px;color:var(--t2)} .win .won{color:var(--ok);font-weight:600} .win .woff{color:var(--crit);font-weight:700}
+.wins{display:grid;grid-template-columns:58px 1fr;gap:4px 8px;align-items:center;font-size:12.5px;color:var(--t2)}
+.wb{position:relative;height:10px;background:var(--band3);border-radius:2px}
+.wb i{position:absolute;top:0;bottom:0}
+.wb i.on{background:color-mix(in srgb,var(--ok) 55%,transparent)} .wb i.off{background:color-mix(in srgb,var(--ok) 55%,transparent)}
+.wb i.cut{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--crit) 60%,transparent) 0 4px,transparent 4px 8px)}
+.wb em{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--t1)}
+.wt{display:flex;justify-content:space-between;font-size:11px;color:var(--t3)}
+.cyc{gap:8px!important}
 </style>
 </head>
 <body>
 <div id="stage">
   <div class="chrome">
     <header class="top">
-      <div class="brand"><img id="logo" alt="OCASA"><div class="bt"><h1>Control Tower</h1><span class="cl">YPF · Añelo</span></div></div>
+      <div class="brand"><img id="logo" alt="OCASA"><div class="bt"><h1>Control Tower</h1><span class="cl">Aluvional · Vista Energy</span></div></div>
       <div class="clock"><b id="clock">15:10:00</b></div>
       <div class="alerts" id="alerts"></div>
       <div class="seg" id="modeSeg"><button data-act="cont" data-id="0" class="on">Normal</button><button data-act="cont" data-id="1">Contingencia</button></div>
       <div class="seg" id="themeSeg"><button data-act="theme" data-id="dark">Oscuro</button><button data-act="theme" data-id="light">Claro</button></div>
     </header>
     <nav class="tabs" aria-label="Pestaña">
-      <button class="tab" id="tab">Distribución YPF · Añelo</button>
-      <div class="tr"><span class="seal" title="Mockup: los números son ilustrativos y el tablero no está conectado a datos reales.">Vista previa · datos ilustrativos</span></div>
+      <button class="tab" id="tab">Arena a granel · Cantera → Planta BPO</button>
+      <div class="tr"><span class="win" id="win"></span><span class="seal" title="Mockup: los números son ilustrativos y el tablero no está conectado a datos reales.">Vista previa · datos ilustrativos</span></div>
     </nav>
     <div class="cbar" id="cbar" style="display:none"></div>
   </div>
 
   <div class="fil">
-    <label class="fchip" data-f="yac">Destino <select id="fYac"></select></label>
-    <label class="fchip" data-f="carga">Carga <select id="fCarga"></select></label>
+    <label class="fchip" data-f="etapa">Etapa <select id="fEtapa"></select></label>
     <label class="fchip" data-f="est">Estado <select id="fEst"></select></label>
+    <label class="fchip" data-f="pc">Zona <select id="fPc"></select></label>
     <button class="lnk" data-act="clearF" id="clearF" style="display:none">Limpiar filtros</button>
     <div class="spacer"></div>
     <div class="srcs" id="srcs"></div>
@@ -246,26 +261,27 @@ tr:not(.s-ok) .mbar i{background:var(--sc)}
 
   <div id="grid">
     <section class="panel" style="grid-area:1/1/span 20/span 9">
-      <div class="ph"><h2>Mapa · Añelo y Vaca Muerta</h2><span id="mapSum"></span><div class="r"><button class="tog on" data-act="lbl" id="bLbl">Nombres</button></div></div>
+      <div class="ph"><h2>Recorrido · Cantera → Planta BPO</h2><span id="mapSum"></span><div class="r"><button class="tog on" data-act="lbl" id="bLbl">Nombres</button><button class="tog on" data-act="rec" id="bRec">Hoja de ruta</button></div></div>
       <div class="mapbox" id="mapbox">
-        <svg id="map" preserveAspectRatio="xMidYMid meet" aria-label="Mapa de la región de Añelo con las unidades en movimiento"></svg>
+        <svg id="map" preserveAspectRatio="xMidYMid meet" aria-label="Mapa del recorrido de la cantera a la Planta BPO con los camiones en movimiento"></svg>
         <div class="legend" id="legend"></div>
-        <div class="mnote">Límites: departamentos INDEC (simplificados). Yacimientos, rutas, río y lagos: ubicación aproximada e ilustrativa.</div>
+        <div class="reco" id="reco"></div>
+        <div class="mnote">Puntos de control y extremos: coordenadas de la Hoja de Ruta Cantera – PBO. Trazado entre puntos, río y lagos: aproximados. Límites: departamentos INDEC (simplificados).</div>
         <div class="mpop" id="mpop" hidden></div>
       </div>
     </section>
     <div class="kpis" id="kpis" style="grid-area:1/10/span 7/span 10"></div>
     <section class="panel" style="grid-area:8/10/span 7/span 10">
-      <div class="ph"><h2>Movimientos en ruta</h2><span id="movSum"></span><div class="r"><span class="ctag">LT · GPS</span></div></div>
+      <div class="ph"><h2>Flota en el circuito</h2><span id="movSum"></span><div class="r"><span class="ctag">LT · GPS</span></div></div>
       <div class="tblwrap"><table class="tbl" id="movTbl"></table></div>
     </section>
     <section class="panel" style="grid-area:15/10/span 6/span 5">
-      <div class="ph"><h2>Ciclo · arena a granel</h2><span>hoy vs objetivo</span></div>
+      <div class="ph"><h2>Ciclo del viaje</h2><span>hoy vs objetivo</span></div>
       <div class="cyc" id="cyc"></div>
     </section>
     <section class="panel" style="grid-area:15/15/span 6/span 5">
-      <div class="ph"><h2>Locaciones YPF</h2></div>
-      <div class="tblwrap"><table class="tbl" id="yacTbl"></table></div>
+      <div class="ph"><h2>Puntos de control</h2><span>hoja de ruta</span></div>
+      <div class="tblwrap"><table class="tbl" id="pcTbl"></table></div>
     </section>
     <section class="panel" style="grid-area:1/20/span 20/span 5">
       <div class="ph"><h2>Bitácora de excepciones</h2><span id="qCount"></span></div>
@@ -295,199 +311,200 @@ const fN=(v,d=1)=>v.toLocaleString('es-AR',{minimumFractionDigits:d,maximumFract
 const fi=v=>Math.round(v).toLocaleString('es-AR');
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ST={ok:['✓','En objetivo'],crit:['▲','Crítico'],risk:['◆','En riesgo'],warn:['●','Aviso'],stale:['◷','Sin datos'],act:['■','Requiere acción']};
+const ST={ok:['✓','En objetivo'],crit:['▲','Crítico'],risk:['◆','En riesgo'],warn:['●','Aviso'],stale:['◷','Sin datos']};
 const SEV={ok:0,warn:1,stale:2,risk:3,crit:4};
 const PIC={1:'▲',2:'◆',3:'●'},PST={1:'crit',2:'risk',3:'warn'};
-const S={theme:(()=>{try{return localStorage.getItem('ypf_theme')||'dark'}catch(e){return 'dark'}})(),cont:false,lbl:true,f:{yac:'Todos',carga:'Todas',est:'Todos'},sel:null,drill:null,closed:11};
+const FDEF={etapa:'Todas',est:'Todos',pc:'Todas'};
+const S={theme:(()=>{try{return localStorage.getItem('alu_theme')||'dark'}catch(e){return 'dark'}})(),cont:false,lbl:true,rec:true,f:{...FDEF},sel:null,drill:null,closed:6};
 let P={};
 function pal(){const cs=getComputedStyle(document.documentElement);['t1','t2','t3','crit','risk','warn','act','stale','ok','line','land','nb','sea','water','ripio','surf','bg','bd','bd2','brand','mint'].forEach(k=>P[k]=cs.getPropertyValue('--'+k).trim())}
 const col=s=>s==='ok'?P.ok:P[s]||P.t2;
-
-/* proyección: Mercator con los mismos parámetros que se usaron para dibujar los departamentos */
 const R=Math.PI/180;
 const proj=(lo,la)=>[GEO.scale*lo*R+GEO.tx,GEO.ty-GEO.scale*Math.log(Math.tan(Math.PI/4+la*R/2))];
 
-/* red · ubicaciones aproximadas */
-const ND={
-  cd:{n:'CD OCASA Neuquén',s:'CD Neuquén',t:'cd',lo:-68.10,la:-38.90},
-  base:{n:'Base OCASA Añelo',s:'Base Añelo',t:'base',lo:-68.76,la:-38.34},
-  can:{n:'Cantera de arena (proveedor)',s:'Cantera',t:'can',lo:-69.55,la:-38.95},
-  lcam:{n:'Loma Campana',s:'Loma Campana',t:'yac',lo:-68.98,la:-38.27},
-  lach:{n:'La Amarga Chica',s:'La Amarga Chica',t:'yac',lo:-68.88,la:-38.12},
-  bsur:{n:'Bandurria Sur',s:'Bandurria Sur',t:'yac',lo:-69.06,la:-38.47},
-  ach:{n:'Aguada del Chañar',s:'Aguada del Chañar',t:'yac',lo:-68.42,la:-38.45}
-};
-const TOWNS=[['Neuquén',-68.059,-38.951,1,1],['Centenario',-68.131,-38.829],['San Patricio del Chañar',-68.30,-38.626],['Rincón de los Sauces',-68.93,-37.39],['Cutral Có',-69.23,-38.93],['Catriel',-67.795,-37.877]];
-const RIVER=[[-69.45,-37.80],[-69.25,-37.98],[-69.10,-38.14],[-68.99,-38.30],[-68.92,-38.43],[-68.86,-38.47]];
-const RIVER2=[[-68.56,-38.62],[-68.45,-38.66],[-68.32,-38.73],[-68.20,-38.80],[-68.13,-38.86],[-68.06,-38.97],[-67.98,-39.02]];
-const LAKES=[{n:'L. Los Barreales',p:[[-68.92,-38.45],[-68.80,-38.42],[-68.68,-38.47],[-68.62,-38.55],[-68.72,-38.58],[-68.86,-38.54]]},{n:'L. Mari Menuco',p:[[-68.78,-38.60],[-68.64,-38.57],[-68.55,-38.60],[-68.58,-38.68],[-68.72,-38.69]]}];
-/* tramos: rp = ruta asfaltada; rip = cuántos km iniciales son de ripio (caso de referencia: 30 de 153 km) */
-const RT={
-  arena:{n:'Cantera → Base Añelo',km:153,min:140,rip:.2,pts:[[-69.55,-38.95],[-69.42,-38.82],[-69.22,-38.64],[-69.00,-38.50],[-68.76,-38.34]]},
-  rp7:{n:'CD Neuquén → Base Añelo (RP7)',km:105,min:90,pts:[[-68.10,-38.90],[-68.131,-38.829],[-68.30,-38.626],[-68.55,-38.47],[-68.76,-38.34]]},
-  lcam:{n:'Base Añelo → Loma Campana',km:26,min:35,pts:[[-68.76,-38.34],[-68.88,-38.31],[-68.98,-38.27]]},
-  lach:{n:'Base Añelo → La Amarga Chica',km:30,min:40,pts:[[-68.76,-38.34],[-68.82,-38.23],[-68.88,-38.12]]},
-  bsur:{n:'Base Añelo → Bandurria Sur',km:32,min:45,pts:[[-68.76,-38.34],[-68.92,-38.37],[-69.06,-38.47]]},
-  ach:{n:'Base Añelo → Aguada del Chañar',km:34,min:45,pts:[[-68.76,-38.34],[-68.60,-38.40],[-68.42,-38.45]]},
-  cdach:{n:'CD Neuquén → Aguada del Chañar',km:78,min:75,pts:[[-68.10,-38.90],[-68.131,-38.829],[-68.30,-38.626],[-68.42,-38.45]]}
-};
-Object.values(RT).forEach(r=>{r.xy=r.pts.map(p=>proj(p[0],p[1]));r.cum=[0];for(let i=1;i<r.xy.length;i++)r.cum.push(r.cum[i-1]+Math.hypot(r.xy[i][0]-r.xy[i-1][0],r.xy[i][1]-r.xy[i-1][1]));r.len=r.cum[r.cum.length-1]});
-const at=(r,p)=>{const d=clamp(p,0,1)*r.len;let i=1;while(i<r.cum.length-1&&r.cum[i]<d)i++;const t=(d-r.cum[i-1])/((r.cum[i]-r.cum[i-1])||1),a=r.xy[i-1],b=r.xy[i];return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]};
-const dest=r=>r==='arena'?'base':r==='rp7'?'base':r==='cdach'?'ach':r;
-const orig=r=>r==='arena'?'can':r==='rp7'||r==='cdach'?'cd':'base';
+/* ───── recorrido: coordenadas de la Hoja de Ruta Cantera – PBO; los vértices intermedios son aproximados ───── */
+const O={n:'Cantera',lo:-69.6275466,la:-38.9567825},D={n:'Planta BPO · Aluvional',lo:-68.630753,la:-38.2225261};
+const PCS=[
+ {id:'PC8',n:'Dársena de acceso a cantera',lo:-69.6267853,la:-38.9524918,risk:'Ingreso y egreso de cantera',ic:'acc'},
+ {id:'PC7',n:'Parada de descanso · deslonado (Gauchito)',lo:-69.6108932,la:-38.9551811,risk:'Única zona de descanso del recorrido',ic:'rest'},
+ {id:'PC6',n:'Rotonda de acceso a Cutral Có',lo:-69.2079391,la:-38.9301147,risk:'Rotonda urbana',ic:'warn'},
+ {id:'PC5',n:'Curva y contracurva · pendientes',lo:-69.051445,la:-38.6097794,risk:'Pendientes pronunciadas · sin banquina',ic:'warn'},
+ {id:'PC3',n:'Dique Portezuelo · bifurcación RP17 – RP1',lo:-68.9624634,la:-38.4420738,risk:'Curva cerrada',ic:'warn'},
+ {id:'PC4',n:'Puente Portezuelo',lo:-68.9247818,la:-38.4497719,risk:'Carril único · curvas y contracurvas · pendientes',ic:'bridge'},
+ {id:'PC1',n:'Intersección Los Santitos · RP7',lo:-68.8369446,la:-38.3142776,risk:'Subida a ruta · alto tránsito',ic:'warn'}
+];
+const VTX=[[O.lo,O.la],[-69.6108932,-38.9551811],[-69.50,-38.950],[-69.40,-38.944],[-69.2079391,-38.9301147],[-69.17,-38.84],[-69.11,-38.72],[-69.051445,-38.6097794],[-69.02,-38.53],[-68.9624634,-38.4420738],[-68.9247818,-38.4497719],[-68.885,-38.39],[-68.8369446,-38.3142776],[-68.74,-38.27],[D.lo,D.la]];
+const RT={km:153,min:140,xy:VTX.map(p=>proj(p[0],p[1]))};
+RT.cum=[0];for(let i=1;i<RT.xy.length;i++)RT.cum.push(RT.cum[i-1]+Math.hypot(RT.xy[i][0]-RT.xy[i-1][0],RT.xy[i][1]-RT.xy[i-1][1]));RT.len=RT.cum[RT.cum.length-1];
+const at=p=>{const d=clamp(p,0,1)*RT.len;let i=1;while(i<RT.cum.length-1&&RT.cum[i]<d)i++;const t=(d-RT.cum[i-1])/((RT.cum[i]-RT.cum[i-1])||1),a=RT.xy[i-1],b=RT.xy[i];return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]};
+/* posición de cada PC sobre el recorrido (0 = cantera, 1 = planta) */
+PCS.forEach(pc=>{const v=VTX.findIndex(p=>Math.abs(p[0]-pc.lo)<1e-6);pc.p=v>=0?RT.cum[v]/RT.len:0;pc.km=Math.round(pc.p*RT.km)});
+PCS.find(x=>x.id==='PC8').p=0.004;
+const TOWNS=[['Añelo',-68.789,-38.354,1],['Cutral Có',-69.23,-38.93,1,1],['Sauzal Bonito',-69.12,-38.60],['San Patricio del Chañar',-68.30,-38.626],['Plaza Huincul',-69.17,-38.905,0,0,1]];
+const RIVER=[[-69.45,-37.80],[-69.25,-37.98],[-69.10,-38.14],[-69.00,-38.30],[-68.95,-38.40],[-68.93,-38.45]];
+const RIVER2=[[-68.50,-38.62],[-68.40,-38.67],[-68.30,-38.73],[-68.20,-38.80],[-68.13,-38.86],[-68.06,-38.97]];
+const LAKES=[{n:'Emb. Los Barreales',p:[[-68.99,-38.47],[-68.88,-38.44],[-68.76,-38.47],[-68.71,-38.56],[-68.79,-38.66],[-68.92,-38.66],[-69.01,-38.58]]},{n:'L. Mari Menuco',p:[[-68.72,-38.52],[-68.58,-38.49],[-68.46,-38.54],[-68.49,-38.64],[-68.64,-38.65]]}];
 
-/* unidades · DEMO. dir 1 = del origen al destino del tramo; -1 = vuelta */
-const CARGAS=['Arena a granel','Tubulares OCTG','Químicos de fractura','Repuestos e insumos','Cañería y accesorios'];
+/* ───── flota · DEMO. 15 camiones (caso de referencia). Etapas: cargando · ida · descargando · vuelta · descanso ───── */
+const ETAPAS=['Cargando en cantera','Ida (cargado)','En planta','Vuelta (vacío)','Descanso'];
 const U=[
- {id:'01',r:'arena',dir:1,p:.36,c:'Arena a granel',q:'35 tn'},
- {id:'02',r:'arena',dir:1,p:.11,c:'Arena a granel',q:'35 tn',flag:'det',detMin:42,st:'crit',x:'E-3101'},
- {id:'03',r:'arena',dir:-1,p:.52,c:'Arena a granel',q:'vacío'},
- {id:'04',r:'arena',dir:1,p:.78,c:'Arena a granel',q:'35 tn',st:'warn',dly:25},
- {id:'05',r:'arena',dir:-1,p:.18,c:'Arena a granel',q:'vacío'},
- {id:'06',r:'rp7',dir:1,p:.55,c:'Tubulares OCTG',q:'22 tn'},
- {id:'07',r:'bsur',dir:1,p:.42,c:'Químicos de fractura',q:'18 tn',st:'warn',dly:40,x:'E-3109'},
- {id:'08',r:'lcam',dir:1,p:1,c:'Tubulares OCTG',q:'24 tn',flag:'loc',locMin:105,st:'crit',x:'E-3102'},
- {id:'09',r:'lcam',dir:1,p:1,c:'Repuestos e insumos',q:'6 tn',flag:'loc',locMin:70,st:'warn',x:'E-3102'},
- {id:'10',r:'lach',dir:1,p:.62,c:'Repuestos e insumos',q:'4 tn'},
- {id:'11',r:'rp7',dir:1,p:.28,c:'Químicos de fractura',q:'20 tn'},
- {id:'12',r:'rp7',dir:1,p:.71,c:'Cañería y accesorios',q:'16 tn',flag:'gps',gpsMin:28,st:'stale',x:'E-3105'},
- {id:'13',r:'ach',dir:-1,p:.46,c:'Repuestos e insumos',q:'vacío'},
- {id:'14',r:'cdach',dir:1,p:.44,c:'Cañería y accesorios',q:'19 tn'}
+ {id:'01',e:'ida',p:.30,v:72},
+ {id:'02',e:'ida',p:.55,v:68},
+ {id:'03',e:'ida',p:.60,v:0,flag:'det',detMin:34,st:'crit',x:'E-4101'},
+ {id:'04',e:'ida',p:.66,v:96,st:'crit',x:'E-4102',vel:1},
+ {id:'05',e:'ida',p:.86,v:71},
+ {id:'06',e:'vuelta',p:.80,v:74},
+ {id:'07',e:'vuelta',p:.45,v:70},
+ {id:'08',e:'vuelta',p:.18,v:76},
+ {id:'09',e:'vuelta',p:.79,v:12,st:'warn',x:'E-4107',bridge:1},
+ {id:'10',e:'planta',p:1,flag:'loc',locMin:85,st:'crit',x:'E-4103'},
+ {id:'11',e:'planta',p:1,flag:'loc',locMin:62,st:'warn',x:'E-4103'},
+ {id:'12',e:'ida',p:.40,v:0,flag:'gps',gpsMin:26,st:'stale',x:'E-4106'},
+ {id:'13',e:'cantera',p:0,flag:'loc',locMin:14},
+ {id:'14',e:'cantera',p:0,flag:'loc',locMin:6},
+ {id:'15',e:'descanso',p:.012,flag:'rest',locMin:25}
 ];
-U.forEach(u=>{u.st=u.st||'ok';u.sp=1/(RT[u.r].min*2.2);u.hold=0});
-const uMoving=u=>!u.flag;
-const uDest=u=>u.dir>0?dest(u.r):orig(u.r);
-const uFrom=u=>u.dir>0?orig(u.r):dest(u.r);
-const uEta=u=>u.flag==='loc'?null:now()+((u.dir>0?1-u.p:u.p)*RT[u.r].min+(u.dly||0)+(u.flag==='det'?u.detMin:0))*60000;
-const uSit=u=>u.flag==='det'?`Detenida ${dmin(u.detMin)} en ripio`:u.flag==='loc'?`En locación ${dmin(u.locMin)}`:u.flag==='gps'?`Sin GPS ${dmin(u.gpsMin)}`:u.dly?`En viaje · +${dmin(u.dly)}`:(u.q==='vacío'?'Regreso vacío':'En viaje · a horario');
+U.forEach(u=>{u.st=u.st||'ok';u.sp=1/(RT.min*1.1);u.hold=0});
+/* las unidades con incidencia se ubican en el punto de control que nombra su alerta */
+{const pp=id=>PCS.find(x=>x.id===id).p,u=id=>U.find(x=>x.id===id);u('03').p=pp('PC5')-.008;u('04').p=pp('PC5')+.03;u('12').p=pp('PC5')-.07;u('09').p=pp('PC4')+.012}
+const uMoving=u=>!u.flag&&!u.bridge;
+const ETL={cantera:'Cargando en cantera',ida:'Ida (cargado)',planta:'En planta',vuelta:'Vuelta (vacío)',descanso:'Descanso'};
+const ldd=u=>u.e==='ida'||u.e==='planta'?'35 tn':u.e==='cantera'?'cargando':'vacío';
+const uKm=u=>Math.round(u.p*RT.km);
+const nextPC=u=>{const L=PCS.slice().sort((a,b)=>a.p-b.p);if(u.e==='ida')return L.find(pc=>pc.p>u.p+.003);if(u.e==='vuelta')return L.slice().reverse().find(pc=>pc.p<u.p-.003);return null};
+const pcZone=u=>{let best=null,dm=.045;PCS.forEach(pc=>{const d=Math.abs(pc.p-u.p);if(d<dm){dm=d;best=pc}});return best};
+const uEta=u=>{if(u.flag==='loc'||u.flag==='rest')return null;const rem=u.e==='ida'?1-u.p:u.p;return now()+(rem*RT.min+(u.flag==='det'?u.detMin:0))*60000};
+const uSit=u=>u.flag==='det'?`Detenida ${dmin(u.detMin)} · sin banquina`:u.flag==='gps'?`Sin GPS ${dmin(u.gpsMin)}`:u.vel?`Exceso en PC5: ${u.v} km/h (máx 80)`:u.bridge?'Esperando cruce · puente carril único':u.e==='planta'?`En planta ${dmin(u.locMin)}`:u.e==='cantera'?`Cargando · ${dmin(u.locMin)}`:u.e==='descanso'?`Descanso ${dmin(u.locMin)} · PC7`:'En viaje · a horario';
 
-/* fuentes de datos */
-const SRC=[{n:'GPS / LT',age:.5,thr:3},{n:'TMS',age:2,thr:5},{n:'SAP YPF (pedidos)',age:6,thr:10},{n:'Balanza cantera',age:14,thr:10}];
+/* fuentes */
+const SRC=[{n:'GPS / LT',age:.5,thr:3},{n:'Balanza cantera',age:3,thr:10},{n:'Balanza planta',age:4,thr:10},{n:'TMS',age:2,thr:5}];
 
-/* indicadores · DEMO (obj = objetivo, th = umbral; dir 1: más es mejor) */
+/* indicadores · DEMO. Objetivos del caso de referencia: 675 tn/día · ~19 viajes · ciclo 5:20 · permanencia ≤ 1 h · máx 80 km/h */
 const K=[
- {id:'ventana',lbl:'Entregas en ventana',v:93.8,u:'%',tg:95,th:92,dir:1,mn:85,mx:100,src:'TC',d:-1.2,sp:[96.1,95.8,95.2,95.6,94.9,94.4,94.0,93.8]},
- {id:'perm',lbl:'Espera en locación',v:52,u:'min',tg:60,th:75,dir:-1,mn:0,mx:120,src:'LT',d:6,sp:[41,44,47,45,49,55,53,52],meta:()=>`máx hoy <b>1h45</b> · Loma Campana`},
- {id:'arena',lbl:'Arena entregada',v:410,u:'tn',tg:455,th:410,dir:1,mn:0,mx:675,src:'TC',d:-35,sp:[35,105,140,210,245,315,350,410],meta:()=>`esperado <b>455 tn</b> a esta hora · día 675 tn`},
- {id:'ciclo',lbl:'Ciclo de arena',v:348,u:'h',tg:320,th:360,dir:-1,mn:280,mx:400,src:'LT',d:14,sp:[322,330,335,341,338,344,350,348]},
- {id:'gps',lbl:'Unidades con GPS',v:0,u:'%',tg:98,th:95,dir:1,mn:80,mx:100,src:'LT',d:-7.1,sp:[100,100,100,100,92.9,100,92.9,92.9]},
- {id:'viajes',lbl:'Viajes cumplidos',v:73.1,u:'%',tg:75,th:70,dir:1,mn:40,mx:100,src:'TC',d:-1.9,sp:[8,17,25,33,44,52,63,73.1],meta:()=>`<b>38</b> de 52 · esperado 75% a esta hora`}
+ {id:'tn',lbl:'Arena entregada',v:420,u:'tn',tg:455,th:410,dir:1,mn:0,mx:675,src:'TC',d:-35,sp:[35,105,140,210,280,315,385,420],meta:()=>`esperado <b>455 tn</b> a esta hora · día 675 tn`},
+ {id:'viajes',lbl:'Viajes completados',v:12,u:'viajes',tg:13,th:12,dir:1,mn:0,mx:19,src:'TC',d:-1,sp:[1,3,4,6,8,9,11,12],meta:()=>`<b>12</b> de 19 programados · esperado 13`},
+ {id:'ciclo',lbl:'Ciclo del viaje (prom.)',v:357,u:'h',tg:320,th:360,dir:-1,mn:280,mx:420,src:'LT',d:16,sp:[326,331,338,344,349,352,355,357]},
+ {id:'perm',lbl:'Permanencia en planta',v:52,u:'min',tg:60,th:75,dir:-1,mn:0,mx:120,src:'LT',d:9,sp:[38,41,44,48,47,51,55,52],meta:()=>`máx ahora <b>1h25</b> · unidad 10`},
+ {id:'vel',lbl:'Excesos de velocidad',v:3,u:'eventos',tg:0,th:2,dir:-1,mn:0,mx:6,src:'LT',d:2,sp:[0,0,1,1,1,2,2,3],meta:()=>`sobre <b>80 km/h</b> · 2 en zona de curvas (PC5)`},
+ {id:'flota',lbl:'Flota operativa',v:14,u:'de 15',tg:15,th:14,dir:1,mn:10,mx:15,src:'TC',d:0,sp:[15,15,15,15,14,14,14,14],meta:()=>`1 en taller · peritaje semestral de 3 unidades en 12 días`}
 ];
-const fmtV=(k,v)=>k.u==='%'?`${fN(v,1)}<small>%</small>`:k.u==='min'?`${fi(v)}<small>min</small>`:k.u==='h'?`${Math.floor(v/60)}:${p2(Math.round(v%60))}<small>h</small>`:`${fi(v)}<small>${k.u}</small>`;
-const fmtT=(k,v)=>k.u==='%'?fN(v,1)+'%':k.u==='min'?fi(v)+' min':k.u==='h'?`${Math.floor(v/60)}:${p2(Math.round(v%60))} h`:fi(v)+' '+k.u;
-function lvl(v,k){let th=k.th;if(S.cont)th=k.dir>0?th-(k.tg-th):th+(th-k.tg);if(k.dir>0)return v>=k.tg?'ok':v>=th?'warn':'crit';return v<=k.tg?'ok':v<=th?'warn':'crit'}
+const fmtV=(k,v)=>k.u==='min'?`${fi(v)}<small>min</small>`:k.u==='h'?`${Math.floor(v/60)}:${p2(Math.round(v%60))}<small>h</small>`:`${fi(v)}<small>${k.u}</small>`;
+const fmtT=(k,v)=>k.u==='min'?fi(v)+' min':k.u==='h'?`${Math.floor(v/60)}:${p2(Math.round(v%60))} h`:fi(v)+' '+k.u;
+function lvl(v,k){let th=k.th;if(S.cont)th=k.dir>0?th-(k.tg-th||1):th+(th-k.tg||1);if(k.dir>0)return v>=k.tg?'ok':v>=th?'warn':'crit';return v<=k.tg?'ok':v<=th?'warn':'crit'}
 
-/* excepciones · DEMO. orig: dónde se detecta según el principio (LT: unidad/viaje; TC: agregado) */
+/* ───── excepciones · DEMO. orig: LT (unidad, viaje) o TORRE (agregado, cruce de fuentes) ───── */
 const E=[
- {id:'E-3101',p:1,t:'Unidad 02 detenida en tramo de ripio',what:'Sin movimiento hace 42 min a 18 km de la cantera, cargada con 35 tn',orig:'LT',code:'UNIDAD_DETENIDA',u:'02',yac:'base',proc:'Arena a granel',owner:'Tráfico Añelo',st:'nueva',min:12,left:108,vol:35,vu:'tn',sug:'Llamar al chofer y enviar auxilio desde la Base Añelo'},
- {id:'E-3102',p:1,t:'Loma Campana: espera en locación 1h45',what:'2 unidades en cola de descarga; objetivo de permanencia ≤ 1 h',orig:'TC',code:'PERMANENCIA_EN_LOCACION',u:'08',yac:'lcam',proc:'Distribución a locación',owner:'Coordinación YPF',st:'reconocida',min:45,left:75,vol:2,vu:'unidades',sug:'Pedir a YPF ventana de descarga prioritaria y reprogramar la próxima salida'},
- {id:'E-3109',p:2,t:'Químicos a Bandurria Sur: ventana 16:00 en riesgo',what:'ETA 16:40 · la ventana de recepción cierra a las 16:00',orig:'TC',code:'VENTANA_ENTREGA_EN_RIESGO',u:'07',yac:'bsur',proc:'Distribución a locación',owner:'Coordinación YPF',st:'nueva',min:8,left:50,vol:18,vu:'tn',sug:'Confirmar con la locación extensión de ventana hasta 17:00'},
- {id:'E-3105',p:2,t:'Unidad 12 sin GPS hace 28 min',what:'Último reporte en RP7, cerca de San Patricio del Chañar',orig:'LT',code:'UNIDAD_SIN_GPS',u:'12',yac:'base',proc:'Cañería y accesorios',owner:'Tráfico Añelo',st:'en gestión',min:28,left:212,vol:16,vu:'tn',sug:'Contactar al chofer por radio y validar el equipo'},
- {id:'E-3103',p:2,t:'Ráfagas > 60 km/h en RP7',what:'Circulación reducida entre Chañar y Añelo hasta las 19 h',orig:'TC',code:'RIESGO_EXTERNO',yac:'Todos',proc:'Todos',owner:'Tráfico Añelo',st:'reconocida',min:64,left:176,vol:4,vu:'unidades en tramo',sug:'Limitar velocidad a 60 km/h y avisar a choferes'},
- {id:'E-3104',p:2,t:'Arena: 4 viajes fuera del horario de cantera',what:'La cantera corta de 01 a 05 h; 4 viajes del turno noche quedan sin carga',orig:'TC',code:'PROGRAMACION_EN_RIESGO',yac:'base',proc:'Arena a granel',owner:'Programación',st:'nueva',min:20,left:220,vol:140,vu:'tn',sug:'Adelantar 2 cargas a las 23 h y pasar 2 a las 05 h'},
- {id:'E-3106',p:3,t:'Aguada del Chañar: remito sin firma digital',what:'Entrega 14:20 sin constancia firmada en la app',orig:'LT',code:'POD_INCOMPLETO',u:'13',yac:'ach',proc:'Repuestos e insumos',owner:'Base Añelo',st:'en gestión',min:50,left:430,vol:1,vu:'remito',sug:'Pedir la firma al supervisor de locación'},
- {id:'E-3107',p:3,t:'Control de alcoholemia pendiente · turno noche',what:'2 choferes sin control registrado antes del ingreso',orig:'TC',code:'REQUISITO_HSE',yac:'Todos',proc:'Todos',owner:'HSE',st:'nueva',min:15,left:465,vol:2,vu:'choferes',sug:'Programar el control a las 18:30 en la Base Añelo'},
- {id:'E-3108',p:3,t:'Ripio: bache reportado en km 18',what:'Reportado por 3 choferes de arena en la última hora',orig:'LT',code:'CAMINO_EN_MAL_ESTADO',yac:'base',proc:'Arena a granel',owner:'Mantenimiento de camino',st:'reconocida',min:70,left:410,vol:5,vu:'unidades/hora',sug:'Pedir motoniveladora al contratista del tramo'}
+ {id:'E-4101',p:1,t:'Unidad 03 detenida en PC5 · zona sin banquina',what:'Cargada con 35 tn, detenida hace 34 min en zona de curvas y pendientes sin banquina: riesgo para la unidad y el tránsito',orig:'LT',code:'UNIDAD_DETENIDA',u:'03',pc:'PC5',owner:'Tráfico OCASA',st:'nueva',min:10,left:110,vol:35,vu:'tn',sug:'Contactar al chofer, balizar y enviar auxilio; si es falla, coordinar grúa'},
+ {id:'E-4102',p:1,t:'Unidad 04 a 96 km/h en zona de curvas (PC5)',what:'Velocidad máxima del recorrido: 80 km/h. Tercer exceso del día',orig:'LT',code:'EXCESO_VELOCIDAD',u:'04',pc:'PC5',owner:'HSE',st:'nueva',min:3,left:117,vol:1,vu:'chofer',sug:'Llamar al chofer, registrar el desvío y citarlo a charla de seguridad al volver'},
+ {id:'E-4103',p:2,t:'Planta BPO: 2 camiones con permanencia > 1 h',what:'Unidad 10 en planta hace 1h25 y unidad 11 hace 1h02; objetivo de permanencia ≤ 1 h',orig:'TORRE',code:'PERMANENCIA_EN_PLANTA',u:'10',pc:'D',owner:'Coordinación Aluvional',st:'reconocida',min:25,left:215,vol:2,vu:'unidades',sug:'Pedir a planta prioridad de descarga y avisar a las unidades que llegan'},
+ {id:'E-4104',p:2,t:'Arena entregada 35 tn bajo lo esperado',what:'420 tn entregadas contra 455 tn esperadas a esta hora; objetivo del día 675 tn',orig:'TORRE',code:'VOLUMEN_DIARIO_EN_RIESGO',pc:'D',owner:'Programación',st:'nueva',min:15,left:225,vol:35,vu:'tn',sug:'Sumar un viaje antes del corte de cantera (01:00) con la unidad 14'},
+ {id:'E-4105',p:2,t:'Corte de cantera 01–05 h: 3 viajes sin carga',what:'La cantera no despacha entre la 1 y las 5; 3 viajes del turno noche quedan fuera de horario',orig:'TORRE',code:'PROGRAMACION_EN_RIESGO',pc:'PC8',owner:'Programación',st:'nueva',min:30,left:240,vol:105,vu:'tn',sug:'Adelantar 2 cargas a las 23 h y pasar 1 a las 05 h'},
+ {id:'E-4106',p:2,t:'Unidad 12 sin GPS hace 26 min',what:'Último reporte cerca de Sauzal Bonito, cargada',orig:'LT',code:'UNIDAD_SIN_GPS',u:'12',pc:'PC5',owner:'Tráfico OCASA',st:'en gestión',min:26,left:214,vol:35,vu:'tn',sug:'Contactar al chofer por radio y validar el equipo GPS'},
+ {id:'E-4107',p:3,t:'Puente Portezuelo: espera para cruzar 12 min',what:'Carril único; unidad 09 esperando el paso de tránsito en sentido contrario',orig:'LT',code:'ESPERA_EN_PUENTE',u:'09',pc:'PC4',owner:'Tráfico OCASA',st:'reconocida',min:12,left:468,vol:1,vu:'unidad',sug:'Sin acción si cruza antes de 20 min; registrar para el análisis de ciclo'},
+ {id:'E-4108',p:3,t:'Alcoholemia y drogas pendiente · turno noche',what:'2 choferes sin control registrado; es requisito de acceso del cliente',orig:'TORRE',code:'REQUISITO_HSE',owner:'HSE',st:'nueva',min:20,left:460,vol:2,vu:'choferes',sug:'Hacer el control a las 18:30 antes del primer despacho nocturno'},
+ {id:'E-4109',p:3,t:'Peritaje semestral: 3 unidades vencen en 12 días',what:'Unidades 05, 08 y 13; el peritaje cada 6 meses es requisito del contrato',orig:'TORRE',code:'PERITAJE_POR_VENCER',owner:'Mantenimiento de flota',st:'reconocida',min:300,left:480,vol:3,vu:'unidades',sug:'Agendar el peritaje escalonado para no bajar la flota operativa'}
 ];
 E.forEach(e=>{e.at=BASE-e.min*60000;e.due=BASE+e.left*60000;e.log=[{t:e.at,x:e.orig==='LT'?`Detectada en LiveTracking · ${e.code}`:`Detectada por regla de la Torre · ${e.code}`}];if(e.st!=='nueva')e.log.push({t:e.at+3*60000,x:`Reconocida por ${e.owner}`});if(e.st==='en gestión')e.log.push({t:e.at+6*60000,x:'En gestión'})});
 const SLBL={nueva:'NUEVA',reconocida:'RECONOCIDA','en gestión':'◐ EN GESTIÓN',resuelta:'✓ RESUELTA',cerrada:'CERRADA'};
 const SCLS={nueva:'st-new','en gestión':'st-gest',resuelta:'st-res'};
-const CAUSAS=['Espera en locación','Falla mecánica','Camino / ripio','Clima','Corte de ruta / conflicto','Falta de unidad','Falla de sistema o integración','Error de datos / pedido'];
-const TEAMS=['Tráfico Añelo','Coordinación YPF','Base Añelo','Programación','HSE','Mantenimiento de camino','Sistemas / Integraciones','Jefe de turno'];
-
-/* locaciones · DEMO */
-const YAC=[['lcam',9,12,2,82],['lach',7,8,0,41],['bsur',5,7,0,48],['ach',6,6,0,35]];
+const CAUSAS=['Falla mecánica','Espera en planta','Espera en cantera','Conducta del chofer (velocidad)','Camino / calzada','Clima / viento','Falta de unidad','Falla de GPS o integración'];
+const TEAMS=['Tráfico OCASA','Coordinación Aluvional','Programación','HSE','Mantenimiento de flota','Jefe de turno'];
 
 /* filtros */
-const matchU=u=>(S.f.yac==='Todos'||uDest(u)===S.f.yac||dest(u.r)===S.f.yac)&&(S.f.carga==='Todas'||u.c===S.f.carga)&&(S.f.est==='Todos'||(S.f.est==='desvio'?u.st!=='ok':u.st==='ok'));
-const matchE=e=>(S.f.yac==='Todos'||e.yac===S.f.yac||e.yac==='Todos')&&(S.f.carga==='Todas'||e.proc===S.f.carga||e.proc==='Todos')&&(!S.cont||e.p<=2);
+const ETF={Todas:null,cantera:'cantera',ida:'ida',planta:'planta',vuelta:'vuelta',descanso:'descanso'};
+const matchU=u=>(S.f.etapa==='Todas'||u.e===S.f.etapa)&&(S.f.est==='Todos'||(S.f.est==='desvio'?u.st!=='ok':u.st==='ok'))&&(S.f.pc==='Todas'||(pcZone(u)||{}).id===S.f.pc||(S.f.pc==='D'&&u.e==='planta'));
+const matchE=e=>(S.f.pc==='Todas'||e.pc===S.f.pc||!e.pc)&&(!S.cont||e.p<=2)&&(S.f.etapa==='Todas'||!e.u||U.find(u=>u.id===e.u).e===S.f.etapa);
 const openE=()=>E.filter(e=>e.st!=='cerrada');
+const pcState=id=>{const ex=openE().filter(e=>e.pc===id&&e.st!=='resuelta'),ps=ex.map(e=>e.p);return ps.length?PST[Math.min(...ps)]:'ok'};
 
 /* ───── mapa ───── */
-const VB=[80,300,810,820];
+const VB=[30,450,690,600];
+const pth=pts=>pts.map((p,i)=>(i?'L':'M')+proj(p[0],p[1]).map(v=>v.toFixed(1)).join(',')).join('');
+const FF='font-family="Montserrat,system-ui,sans-serif"';
 function mapStatic(){
   const svg=$('#map');svg.setAttribute('viewBox',VB.join(' '));
-  const path=pts=>pts.map((p,i)=>(i?'L':'M')+proj(p[0],p[1]).map(v=>v.toFixed(1)).join(',')).join('');
   let g=`<defs><pattern id="hatchV" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" stroke="${P.stale}" stroke-width="1.4"/></pattern></defs>`;
   g+=`<rect x="-500" y="-500" width="2000" height="2200" fill="${P.nb}"/>`;
-  GEO.deps.forEach(d=>{const nq=d.p==='NEUQUEN',an=d.n==='Añelo';g+=`<path d="${d.d}" fill="${nq?P.land:P.nb}" stroke="${P.line}" stroke-width="${an?2.2:.8}" stroke-opacity="${an?.95:.6}"><title>${esc(d.n)} · ${nq?'Neuquén':d.p==='RIONEGRO'?'Río Negro':d.p==='MENDOZA'?'Mendoza':'La Pampa'}</title></path>`});
-  g+=`<path d="${GEO.prov}" fill="none" stroke="${P.t3}" stroke-width="2" stroke-dasharray="7 5" opacity=".9"/>`;
-  g+=`<path d="${path(RIVER)}" fill="none" stroke="${P.water}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="${path(RIVER2)}" fill="none" stroke="${P.water}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>`;
-  LAKES.forEach(l=>g+=`<path d="${path(l.p)}Z" fill="${P.water}" stroke="${P.water}" stroke-width="2" stroke-linejoin="round"><title>${l.n} (aproximado)</title></path>`);
+  GEO.deps.forEach(d=>{const nq=d.p==='NEUQUEN',an=d.n==='Añelo';g+=`<path d="${d.d}" fill="${nq?P.land:P.nb}" stroke="${P.line}" stroke-width="${an?2:.8}" stroke-opacity="${an?.9:.6}"><title>${esc(d.n)}</title></path>`});
+  g+=`<path d="${GEO.prov}" fill="none" stroke="${P.t3}" stroke-width="2" stroke-dasharray="7 5"/>`;
+  g+=`<path d="${pth(RIVER)}" fill="none" stroke="${P.water}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="${pth(RIVER2)}" fill="none" stroke="${P.water}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  LAKES.forEach(l=>g+=`<path d="${pth(l.p)}Z" fill="${P.water}" stroke="${P.water}" stroke-width="2" stroke-linejoin="round"><title>${l.n} (aproximado)</title></path>`);
   g+=`<g class="lbls">`;
-  GEO.deps.filter(d=>d.p==='NEUQUEN'&&['Añelo','Confluencia','Pehuenches','Zapala','Picun Leufu'].includes(d.n)).forEach(d=>{let [x,y]=d.c;if(d.n==='Añelo'){x=330;y=390}if(d.n==='Pehuenches'){x=260;y=170}if(d.n==='Confluencia'){x=560;y=1000}if(d.n==='Zapala'){x=160;y=880}if(d.n==='Picun Leufu'){x=330;y=1040}
-    if(x>VB[0]+30&&x<VB[0]+VB[2]-30&&y>VB[1]+20&&y<VB[1]+VB[3]-10)g+=`<text x="${x}" y="${y}" fill="${P.t3}" font-size="15" font-weight="700" letter-spacing="2" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif">${esc(d.n.toUpperCase())}</text>`});
-  g+=`<text x="815" y="470" fill="${P.t3}" font-size="15" font-weight="700" letter-spacing="2" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif">RÍO NEGRO</text>`;
-  g+=`<text x="${proj(-69.05,-38.10)[0]}" y="${proj(-69.05,-38.10)[1]}" fill="${P.water}" font-size="13" font-style="italic" font-family="Montserrat,system-ui,sans-serif" transform="rotate(-48 ${proj(-69.05,-38.10).join(' ')})">Río Neuquén</text>`;
-  LAKES.forEach((l,i)=>{const c=l.p.reduce((a,p)=>[a[0]+p[0]/l.p.length,a[1]+p[1]/l.p.length],[0,0]),[x,y]=proj(c[0],c[1]);g+=`<text x="${x+(i?-6:0)}" y="${y+(i?40:-26)}" fill="${P.water}" font-size="12.5" font-style="italic" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif">${l.n}</text>`});
-  TOWNS.forEach(([n,lo,la,big,left])=>{const [x,y]=proj(lo,la);g+=`<circle cx="${x}" cy="${y}" r="${big?4:3}" fill="${P.t2}"/><text x="${left?x-8:x+8}" y="${left?y+22:y-7}" text-anchor="${left?'end':'start'}" fill="${P.t2}" font-size="${big?15:13}" font-weight="${big?700:500}" font-family="Montserrat,system-ui,sans-serif" stroke="${P.land}" stroke-width="3" paint-order="stroke">${n}</text>`});
+  [['AÑELO',300,560],['CONFLUENCIA',560,1000],['ZAPALA',110,880],['PICÚN LEUFÚ',300,1060]].forEach(([n,x,y])=>g+=`<text x="${x}" y="${y}" fill="${P.t3}" font-size="14" font-weight="700" letter-spacing="2" text-anchor="middle" ${FF}>${n}</text>`);
+  LAKES.forEach((l,i)=>{const c=l.p.reduce((a,p)=>[a[0]+p[0]/l.p.length,a[1]+p[1]/l.p.length],[0,0]),[x,y]=proj(c[0],c[1]);g+=`<text x="${x}" y="${y+4}" fill="${P.surf}" font-size="12.5" font-style="italic" text-anchor="middle" ${FF} opacity=".9">${l.n}</text>`});
+  TOWNS.forEach(([n,lo,la,big,below,left])=>{const [x,y]=proj(lo,la);g+=`<circle cx="${x}" cy="${y}" r="${big?4:3}" fill="${P.t2}"/><text x="${left?x-8:x+8}" y="${below?y+20:y-8}" text-anchor="${left?'end':'start'}" fill="${P.t2}" font-size="${big?14.5:12.5}" font-weight="${big?700:500}" ${FF} stroke="${P.land}" stroke-width="3" paint-order="stroke">${n}</text>`});
   g+=`</g>`;
-  /* escala: 20 km (Mercator: px = escala × km/R / cos φ) */
-  const kmPx=km=>GEO.scale*(km/6371)/Math.cos(38.6*R),sx=VB[0]+VB[2]-40-kmPx(20),sy=VB[1]+30;
-  g+=`<g><line x1="${sx}" x2="${sx+kmPx(20)}" y1="${sy}" y2="${sy}" stroke="${P.t2}" stroke-width="3"/><line x1="${sx}" x2="${sx}" y1="${sy-6}" y2="${sy+6}" stroke="${P.t2}" stroke-width="2"/><line x1="${sx+kmPx(20)}" x2="${sx+kmPx(20)}" y1="${sy-6}" y2="${sy+6}" stroke="${P.t2}" stroke-width="2"/><text x="${sx+kmPx(10)}" y="${sy+22}" fill="${P.t2}" font-size="13" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif">20 km</text></g>`;
+  const kmPx=km=>GEO.scale*(km/6371)/Math.cos(38.6*R),sx=VB[0]+VB[2]-40-kmPx(20),sy=VB[1]+28;
+  g+=`<g><line x1="${sx}" x2="${sx+kmPx(20)}" y1="${sy}" y2="${sy}" stroke="${P.t2}" stroke-width="3"/><line x1="${sx}" x2="${sx}" y1="${sy-6}" y2="${sy+6}" stroke="${P.t2}" stroke-width="2"/><line x1="${sx+kmPx(20)}" x2="${sx+kmPx(20)}" y1="${sy-6}" y2="${sy+6}" stroke="${P.t2}" stroke-width="2"/><text x="${sx+kmPx(10)}" y="${sy+20}" fill="${P.t2}" font-size="12.5" text-anchor="middle" ${FF}>20 km</text></g>`;
   g+=`<g id="routes"></g><g id="nodes"></g><g id="units"></g>`;
   svg.innerHTML=g;
 }
-function routeState(id){const us=U.filter(u=>u.r===id&&matchU(u));return us.reduce((m,u)=>SEV[u.st]>SEV[m]?u.st:m,'ok')}
 function drawRoutes(){
-  let g='';Object.entries(RT).forEach(([id,r])=>{const s=routeState(id),c=s==='ok'?P.line:col(s),on=U.some(u=>u.r===id&&matchU(u)),op=on?1:.3;
-    const d=r.xy.map((p,i)=>(i?'L':'M')+p.map(v=>v.toFixed(1)).join(',')).join('');
-    g+=`<g opacity="${op}"><title>${esc(r.n)} · ${r.km} km${r.rip?` · primeros ${Math.round(r.km*r.rip)} km de ripio`:''}</title><path d="${d}" fill="none" stroke="${P.bg}" stroke-width="7" stroke-linejoin="round" opacity=".55"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${s==='ok'?2.6:3.4}" stroke-linejoin="round"/>`;
-    if(r.rip){const n=Math.max(2,Math.round(r.rip*20)),pts=[];for(let i=0;i<=n;i++)pts.push(at(r,r.rip*i/n));g+=`<path d="${pts.map((p,i)=>(i?'L':'M')+p.map(v=>v.toFixed(1)).join(',')).join('')}" fill="none" stroke="${P.ripio}" stroke-width="4.5" stroke-dasharray="6 4"/>`}
-    if(on)g+=`<path d="${d}" class="flow" stroke="${s==='ok'?P.act:c}" stroke-width="2.4" style="--d:${s==='crit'?1.1:s==='ok'?2.6:1.7}s" opacity=".85"/>`;
-    g+=`</g>`});
+  const d=RT.xy.map((p,i)=>(i?'L':'M')+p.map(v=>v.toFixed(1)).join(',')).join('');
+  const worst=U.reduce((m,u)=>SEV[u.st]>SEV[m]?u.st:m,'ok');
+  /* tramos de riesgo de la hoja de ruta, resaltados sobre el trazado */
+  const seg=(a,b)=>{const pts=[];for(let i=0;i<=12;i++)pts.push(at(a+(b-a)*i/12));return pts.map((p,i)=>(i?'L':'M')+p.map(v=>v.toFixed(1)).join(',')).join('')};
+  let g=`<path d="${d}" fill="none" stroke="${P.bg}" stroke-width="9" stroke-linejoin="round" opacity=".6"/><path d="${d}" fill="none" stroke="${P.line}" stroke-width="3.2" stroke-linejoin="round"/>`;
+  if(S.rec)[[PCS[3].p-.05,PCS[3].p+.05],[PCS[4].p-.02,PCS[5].p+.02]].forEach(([a,b])=>g+=`<path d="${seg(a,b)}" fill="none" stroke="${P.risk}" stroke-width="6" stroke-linecap="round" opacity=".55"><title>Tramo de riesgo: curvas, pendientes, sin banquina</title></path>`);
+  g+=`<path d="${d}" class="flow" stroke="${P.act}" stroke-width="2.4" style="--d:2.4s" opacity=".85"><title>Cantera → Planta BPO · ${RT.km} km · 2h20 de viaje</title></path>`;
   $('#routes').innerHTML=g;
 }
-function nodeGlyph(t,x,y,c){if(t==='yac')return `<path d="M${x},${y-10}L${x+10},${y}L${x},${y+10}L${x-10},${y}Z" fill="${P.surf}" stroke="${c}" stroke-width="3"/>`;
-  if(t==='can')return `<path d="M${x},${y-11}L${x+11},${y+8}L${x-11},${y+8}Z" fill="${P.ripio}" stroke="${P.surf}" stroke-width="2"/>`;
-  return `<rect x="${x-9}" y="${y-9}" width="18" height="18" rx="2" fill="${P.brand}" stroke="${P.surf}" stroke-width="2.5"/>`}
-function yacState(id){const ex=openE().filter(e=>e.yac===id&&e.st!=='resuelta'),ps=ex.map(e=>e.p);return ps.length?PST[Math.min(...ps)]:'ok'}
+function pcIcon(pc,x,y,c){
+  if(pc.ic==='rest')return `<circle cx="${x}" cy="${y}" r="10" fill="${P.surf}" stroke="${P.ok}" stroke-width="2.5"/><text x="${x}" y="${y+4.5}" text-anchor="middle" font-size="12" font-weight="800" fill="${P.ok}" ${FF}>P</text>`;
+  if(pc.ic==='bridge')return `<rect x="${x-10}" y="${y-10}" width="20" height="20" rx="3" fill="${P.surf}" stroke="${c}" stroke-width="2.5"/><path d="M${x-6},${y+3}Q${x},${y-6} ${x+6},${y+3}" fill="none" stroke="${c}" stroke-width="2"/>`;
+  if(pc.ic==='acc')return `<circle cx="${x}" cy="${y}" r="6" fill="${P.surf}" stroke="${P.t2}" stroke-width="2"/>`;
+  return `<path d="M${x},${y-11}L${x+11},${y}L${x},${y+11}L${x-11},${y}Z" fill="${P.surf}" stroke="${c}" stroke-width="2.5"/><text x="${x}" y="${y+4.5}" text-anchor="middle" font-size="12" font-weight="800" fill="${c}" ${FF}>!</text>`;
+}
 function drawNodes(){
-  let g='';Object.entries(ND).forEach(([id,n])=>{const [x,y]=proj(n.lo,n.la),s=n.t==='yac'?yacState(id):'ok',c=n.t==='yac'?(s==='ok'?P.ok:col(s)):P.brand,dim=S.f.yac!=='Todos'&&S.f.yac!==id&&n.t==='yac';
-    const cola=n.t==='yac'?U.filter(u=>u.flag==='loc'&&u.r===id).length:0;
-    const lx=id==='base'?16:id==='cd'?-14:id==='bsur'?-14:14,anc=lx<0?'end':'start',ly=id==='base'?-14:id==='lach'?-6:5;
-    g+=`<g class="unit" ${n.t==='yac'||id==='base'?`data-y="${id}"`:''} opacity="${dim?.35:1}"><title>${esc(n.n)}${cola?` · ${cola} en cola`:''}</title>${s!=='ok'?`<circle cx="${x}" cy="${y}" r="9" class="ping" stroke="${c}" stroke-width="2"/>`:''}${nodeGlyph(n.t,x,y,c)}
-      <text class="lbls" x="${x+lx}" y="${y+ly}" fill="${P.t1}" font-size="${n.t==='yac'?14.5:15}" font-weight="700" text-anchor="${anc}" font-family="Montserrat,system-ui,sans-serif" stroke="${P.land}" stroke-width="3.5" paint-order="stroke">${esc(n.s)}${cola?` · ${cola} en cola`:''}</text></g>`});
+  let g='';const LO={PC8:[-12,26,'end'],PC7:[14,26,'start'],PC6:[0,-18,'middle'],PC5:[-16,5,'end'],PC3:[-16,-6,'end'],PC4:[16,14,'start'],PC1:[16,5,'start']};
+  PCS.forEach(pc=>{const [x,y]=proj(pc.lo,pc.la),s=pcState(pc.id),c=s==='ok'?P.warn:col(s),dim=S.f.pc!=='Todas'&&S.f.pc!==pc.id,[dx,dy,an]=LO[pc.id]||[14,5,'start'];
+    if(pc.id==='PC8')return;
+    g+=`<g class="unit" data-pc="${pc.id}" opacity="${dim?.35:1}"><title>${pc.id} · ${esc(pc.n)} · ${esc(pc.risk)} · km ${pc.km}</title>${s!=='ok'?`<circle cx="${x}" cy="${y}" r="10" class="ping" stroke="${c}" stroke-width="2"/>`:''}${pcIcon(pc,x,y,c)}
+     ${S.rec?`<text class="lbls" x="${x+dx}" y="${y+dy}" text-anchor="${an}" fill="${P.t1}" font-size="13" font-weight="700" ${FF} stroke="${P.land}" stroke-width="3.5" paint-order="stroke">${pc.id}${pc.id==='PC3'?'–4':''}</text>`:''}</g>`});
+  const end=(o,lbl,cl,c,lx,ly,an)=>{const [x,y]=proj(o.lo,o.la);return `<g class="unit" data-pc="${lbl==='D'?'D':'PC8'}"><title>${esc(o.n)}</title><circle cx="${x}" cy="${y}" r="13" fill="${c}" stroke="${P.surf}" stroke-width="3"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" ${FF}>${lbl}</text><text x="${x+lx}" y="${y+ly}" text-anchor="${an}" fill="${P.t1}" font-size="15" font-weight="700" ${FF} stroke="${P.land}" stroke-width="3.5" paint-order="stroke">${esc(cl)}</text></g>`};
+  g+=end(O,'O','Cantera',P.ok,0,-20,'middle');
+  g+=end(D,'D','Planta BPO · Aluvional',P.crit,-18,-16,'end');
   $('#nodes').innerHTML=g;
 }
-function unitPos(u){const [x,y]=at(RT[u.r],u.p);let off=[0,0];if(u.flag==='loc'){const i=U.filter(v=>v.flag==='loc'&&v.r===u.r).indexOf(u);off=[18+i*24,-22]}return [x+off[0],y+off[1]]}
+function unitPos(u){
+  if(u.e==='planta'||u.e==='cantera'){const L=U.filter(v=>v.e===u.e),i=L.indexOf(u),[x,y]=at(u.p);return u.e==='planta'?[x+22+i*26,y+16]:[x+12+i*26,y+24]}
+  const [x,y]=at(u.p);return u.e==='descanso'?[x+4,y-24]:[x,y]}
 function unitSvg(u){
-  const c=col(u.st),vis=matchU(u),sel=S.sel===u.id,[X,Y]=unitPos(u);
-  return `<g class="unit" data-u="${u.id}" opacity="${vis?1:.18}" transform="translate(${X.toFixed(1)},${Y.toFixed(1)})"><title>Unidad ${u.id} · ${esc(u.c)} · ${esc(uSit(u))}</title>
+  const c=col(u.st),vis=matchU(u),sel=S.sel===u.id,[X,Y]=unitPos(u),full=u.e==='ida'||u.e==='planta'||u.e==='cantera';
+  const fill=u.st==='stale'?'url(#hatchV)':(full?(u.st==='ok'?P.ok:c):P.surf),strk=u.st==='stale'?P.stale:(full?P.surf:(u.st==='ok'?P.ok:c));
+  return `<g class="unit" data-u="${u.id}" opacity="${vis?1:.18}" transform="translate(${X.toFixed(1)},${Y.toFixed(1)})"><title>Unidad ${u.id} · ${ETL[u.e]} · ${esc(uSit(u))}</title>
     ${u.st!=='ok'&&vis?`<circle r="10" class="ping" stroke="${c}" stroke-width="2"/>`:''}${sel?`<circle r="17" fill="none" stroke="${P.act}" stroke-width="2.5"/>`:''}
-    <rect x="-13" y="-8.5" width="26" height="17" rx="3" fill="${u.st==='stale'?'url(#hatchV)':u.st==='ok'?P.ok:c}" stroke="${u.st==='stale'?P.stale:P.surf}" stroke-width="${u.st==='stale'?2:1.6}" ${u.st==='stale'?'stroke-dasharray="3 2"':''}/>
-    <text y="4.6" text-anchor="middle" font-size="12" font-weight="800" fill="${u.st==='stale'?P.t1:'#0A1215'}" font-family="Montserrat,system-ui,sans-serif">${u.id}</text></g>`;
-}
+    <rect x="-13" y="-8.5" width="26" height="17" rx="3" fill="${fill}" stroke="${strk}" stroke-width="${full&&u.st!=='stale'?1.6:2.2}" ${u.st==='stale'?'stroke-dasharray="3 2"':''}/>
+    <text y="4.6" text-anchor="middle" font-size="12" font-weight="800" fill="${full&&u.st!=='stale'?'#0A1215':P.t1}" ${FF}>${u.id}</text></g>`}
 function drawUnits(){$('#units').innerHTML=U.map(unitSvg).join('')}
-/* en cada cuadro solo se mueven los camiones ya dibujados (así no se pierden los clics) */
 function moveUnits(){U.forEach(u=>{if(!uMoving(u))return;const el=document.querySelector(`#units [data-u="${u.id}"]`);if(!el)return;const [X,Y]=unitPos(u);el.setAttribute('transform',`translate(${X.toFixed(1)},${Y.toFixed(1)})`)})}
 function drawLegend(){
   const sw=i=>`<svg width="30" height="16" viewBox="0 0 30 16" aria-hidden="true">${i}</svg>`;
   $('#legend').innerHTML=[
-    [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="${P.ok}"/>`),'Unidad en viaje'],
-    [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="${P.warn}"/>`),'Con demora'],
-    [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="${P.crit}"/>`),'Detenida / espera crítica'],
+    [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="${P.ok}"/>`),'Cargado (35 tn)'],
+    [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="${P.surf}" stroke="${P.ok}" stroke-width="2"/>`),'Vacío (vuelta)'],
+    [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="${P.crit}"/>`),'Crítico · detenida, exceso'],
     [sw(`<rect x="2" y="3" width="26" height="11" rx="3" fill="url(#hatchV)" stroke="${P.stale}" stroke-dasharray="3 2"/>`),'Sin GPS (última posición)'],
-    [sw(`<line x1="1" x2="29" y1="8" y2="8" stroke="${P.line}" stroke-width="3"/>`),'Ruta · el pulso marca el sentido'],
-    [sw(`<line x1="1" x2="29" y1="8" y2="8" stroke="${P.ripio}" stroke-width="4" stroke-dasharray="6 4"/>`),'Tramo de ripio'],
-    [sw(`<rect x="7" y="0" width="16" height="16" rx="2" fill="${P.brand}"/>`),'Base / CD OCASA'],
-    [sw(`<path d="M15,1L23,8L15,15L7,8Z" fill="none" stroke="${P.ok}" stroke-width="2.5"/>`),'Locación YPF'],
-    [sw(`<path d="M15,1L24,15L6,15Z" fill="${P.ripio}"/>`),'Cantera de arena']
+    [sw(`<line x1="1" x2="29" y1="8" y2="8" stroke="${P.risk}" stroke-width="6" opacity=".6"/>`),'Tramo de riesgo'],
+    [sw(`<path d="M15,1L22,8L15,15L8,8Z" fill="none" stroke="${P.warn}" stroke-width="2"/>`),'Punto de control (PC)'],
+    [sw(`<circle cx="15" cy="8" r="6.5" fill="none" stroke="${P.ok}" stroke-width="2"/><text x="15" y="11.5" text-anchor="middle" font-size="9" font-weight="800" fill="${P.ok}">P</text>`),'Parada de descanso']
   ].map(([s,t])=>`<div>${s}<span>${t}</span></div>`).join('');
 }
-function drawMapDyn(){drawRoutes();drawNodes();drawUnits();
-  const mv=U.filter(u=>!u.flag).length,bad=U.filter(u=>u.st!=='ok').length;$('#mapSum').textContent=`${U.length} unidades · ${bad} con desvío`;
+function drawReco(){$('#reco').hidden=!S.rec;$('#reco').innerHTML=`<b>Hoja de ruta · recomendaciones</b><div><span class="v80">80</span>Velocidad máxima 80 km/h · velocidad controlada en puentes</div><div>⛔ No sobrepasar · respetar las velocidades</div><div>⚠ ~50% del recorrido sin banquina: detenerse solo en zonas de descanso (PC7)</div><div>☾ Sin iluminación ni señalización reflectiva</div>`}
+function drawMapDyn(){drawRoutes();drawNodes();drawUnits();drawReco();
+  const mv=U.filter(u=>uMoving(u)).length,bad=U.filter(u=>u.st!=='ok').length;$('#mapSum').textContent=`${bad} con desvío`;
   document.querySelectorAll('.lbls').forEach(e=>e.style.display=S.lbl?'':'none')}
 
 /* popup de unidad */
 function showPop(id,onlyPos){
   const u=U.find(x=>x.id===id),pop=$('#mpop');if(!u){pop.hidden=true;return}
   const box=$('#mapbox').getBoundingClientRect(),svg=$('#map'),pt=svg.createSVGPoint(),[x,y]=unitPos(u);pt.x=x;pt.y=y;const sp=pt.matrixTransform(svg.getScreenCTM()),sc=window.__s||1;
-  const e=u.x&&E.find(v=>v.id===u.x),eta=uEta(u);
-  if(!onlyPos)pop.innerHTML=`<div class="h"><b>Unidad ${u.id} · ${esc(u.c)}</b><button class="x" data-act="popx" aria-label="Cerrar">✕</button></div>
-   <dl><dt>Tramo</dt><dd>${esc(ND[uFrom(u)].s)} → ${esc(ND[uDest(u)].s)}</dd><dt>Carga</dt><dd>${esc(u.q)}</dd><dt>Situación</dt><dd style="color:${u.st==='ok'?'inherit':col(u.st)};font-weight:700">${ST[u.st][0]} ${esc(uSit(u))}</dd>
-   <dt>ETA</dt><dd>${eta?hm(eta):'—'}</dd><dt>Último GPS</dt><dd>${u.flag==='gps'?`hace ${u.gpsMin} min`:'hace < 1 min'}</dd></dl>${e?`<button class="btn pri" data-act="open" data-id="${e.id}">Ver ${e.id} en la Bitácora</button>`:''}`;
-  let px=(sp.x-box.left)/sc+16,py=(sp.y-box.top)/sc-20;const bw=box.width/sc,bh=box.height/sc;if(px+340>bw)px=bw-344;if(px<6)px=6;if(py+200>bh)py=bh-206;if(py<6)py=6;
+  const e=u.x&&E.find(v=>v.id===u.x),eta=uEta(u),np=nextPC(u),z=pcZone(u);
+  if(!onlyPos)pop.innerHTML=`<div class="h"><b>Unidad ${u.id} · ${ETL[u.e]}</b><button class="x" data-act="popx" aria-label="Cerrar">✕</button></div>
+   <dl><dt>Carga</dt><dd>${ldd(u)}</dd><dt>Situación</dt><dd style="color:${u.st==='ok'?'inherit':col(u.st)};font-weight:700">${ST[u.st][0]} ${esc(uSit(u))}</dd>
+   <dt>Posición</dt><dd>km ${uKm(u)} desde cantera${z?` · zona ${z.id}`:''}</dd><dt>Velocidad</dt><dd>${u.flag?'—':u.v+' km/h'}</dd>
+   <dt>Próximo PC</dt><dd>${np?`${np.id} · ${esc(np.n)}`:'—'}</dd><dt>${u.e==='ida'?'Llega a planta':u.e==='vuelta'?'Llega a cantera':'ETA'}</dt><dd>${eta?hm(eta):'—'}</dd></dl>${e?`<button class="btn pri" data-act="open" data-id="${e.id}">Ver ${e.id} en la Bitácora</button>`:''}`;
+  let px=(sp.x-box.left)/sc+16,py=(sp.y-box.top)/sc-20;const bw=box.width/sc,bh=box.height/sc;if(px+340>bw)px=(sp.x-box.left)/sc-350;if(px<6)px=6;if(py+230>bh)py=bh-236;if(py<6)py=6;
   pop.style.left=px+'px';pop.style.top=py+'px';pop.hidden=false;
 }
 
@@ -498,32 +515,38 @@ function bullet(v,k){const Pp=x=>clamp((x-k.mn)/(k.mx-k.mn)*100,0,100),a=Pp(Math
 function spark(arr,s){const w=92,h=24,mn=Math.min(...arr),mx=Math.max(...arr),r=(mx-mn)||1,X=i=>2+i*(w-6)/(arr.length-1),Y=v=>h-3-(v-mn)/r*(h-6),c=s!=='ok'?col(s):P.t2;
   return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="flex:none"><title>Hoy por hora · 08–15 h</title><polyline points="${arr.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${P.t3}" stroke-width="1.6"/><circle cx="${X(arr.length-1)}" cy="${Y(arr[arr.length-1])}" r="3" fill="${c}"/></svg>`}
 function renderKpis(){
-  const g=K.find(k=>k.id==='gps'),ok=U.filter(u=>u.flag!=='gps').length;g.v=ok/U.length*100;g.sp[g.sp.length-1]=g.v;
-  g.meta=()=>`<b>${ok}</b> de ${U.length} unidades reportando`;
-  $('#kpis').innerHTML=K.map(k=>{const s=lvl(k.v,k),d=k.d,du=k.u==='%'?' pp':k.u==='h'?' min':' '+k.u;
+  $('#kpis').innerHTML=K.map(k=>{const s=lvl(k.v,k),d=k.d,du=k.u==='h'?' min':' '+k.u;
     return `<div class="tile s-${s}"><div class="t-lbl"><span>${k.lbl}</span><span class="t-src" title="${k.src==='LT'?'Se calcula con eventos de LiveTracking':'Se calcula en la Torre cruzando fuentes'}">${k.src==='LT'?'LT':'TORRE'}</span></div>
      <div class="t-row"><div class="t-val">${fmtV(k,k.v)}</div><span class="t-st">${ST[s][0]} ${ST[s][1]}</span></div>
-     <div class="t-spark">${spark(k.sp,s)}<span>${d>=0?'↑':'↓'} ${k.u==='%'?fN(Math.abs(d),1):fi(Math.abs(d))}${du} vs ayer</span></div>${bullet(k.v,k)}
+     <div class="t-spark">${spark(k.sp,s)}<span>${d===0?'= ayer':`${d>0?'↑':'↓'} ${fi(Math.abs(d))}${du} vs ayer`}</span></div>${bullet(k.v,k)}
      <div class="t-meta">${k.meta?k.meta():`Obj ${k.dir>0?'≥':'≤'} <b>${fmtT(k,k.tg)}</b> · umbral ${fmtT(k,k.th)}`}</div></div>`}).join('');
 }
 
 /* ───── tablas ───── */
 function renderMov(){
-  const R=U.filter(matchU).sort((a,b)=>SEV[b.st]-SEV[a.st]||a.id.localeCompare(b.id));
-  $('#movTbl').innerHTML=`<colgroup><col style="width:76px"><col style="width:172px"><col style="width:196px"><col style="width:122px"><col style="width:58px"><col></colgroup><tr><th>Unidad</th><th>Carga</th><th>Tramo</th><th>Avance</th><th>ETA</th><th>Situación</th></tr>`+R.map(u=>{const eta=uEta(u),pr=Math.round((u.dir>0?u.p:1-u.p)*100);
-    return `<tr class="s-${u.st} ${S.sel===u.id?'rsel':''}" data-u="${u.id}"><td class="n">${u.id}</td><td>${esc(u.c)} <span style="color:var(--t3)">· ${esc(u.q)}</span></td><td>${esc(ND[uFrom(u)].s)} → ${esc(ND[uDest(u)].s)}</td><td><span class="mbar"><i style="width:${pr}%"></i></span>${pr}%</td><td>${eta?hm(eta):'—'}</td><td class="st">${ST[u.st][0]} ${esc(uSit(u))}</td></tr>`}).join('');
-  const bad=R.filter(u=>u.st!=='ok').length;$('#movSum').textContent=`${R.length} unidades · ${bad} con desvío · clic para ubicarla en el mapa`;
+  const ord={crit:0,risk:1,stale:2,warn:3,ok:4},R2=U.filter(matchU).sort((a,b)=>ord[a.st]-ord[b.st]||a.id.localeCompare(b.id));
+  $('#movTbl').innerHTML=`<colgroup><col style="width:74px"><col style="width:190px"><col style="width:104px"><col style="width:196px"><col style="width:60px"><col></colgroup><tr><th>Unidad</th><th>Etapa · carga</th><th>Km · km/h</th><th>Próximo punto</th><th>ETA</th><th>Situación</th></tr>`+R2.map(u=>{const eta=uEta(u),np=nextPC(u);
+    return `<tr class="s-${u.st} ${S.sel===u.id?'rsel':''}" data-u="${u.id}"><td class="n">${u.id}</td><td>${ETL[u.e].replace(/ \(.*\)/,'')} · <span style="color:var(--t3)">${ldd(u)}</span></td><td>km ${uKm(u)}${u.flag?'':` · <span style="${u.vel?'color:var(--crit);font-weight:700':''}">${u.v}</span>`}</td><td>${u.e==='ida'?(np?`${np.id} · ${esc(np.n)}`:'Planta BPO'):u.e==='vuelta'?(np?`${np.id} · ${esc(np.n)}`:'Cantera'):u.e==='descanso'?'Cantera (PC8)':'—'}</td><td>${eta?hm(eta):'—'}</td><td class="st">${ST[u.st][0]} ${esc(uSit(u))}</td></tr>`}).join('');
+  const bad=R2.filter(u=>u.st!=='ok').length,on=U.filter(u=>u.e==='ida'||u.e==='vuelta').length;
+  $('#movSum').textContent=`${R2.length} camiones · ${on} en ruta · ${bad} con desvío · clic para ubicarlo`;
 }
-function renderYac(){
-  $('#yacTbl').innerHTML=`<colgroup><col><col style="width:92px"><col style="width:50px"><col style="width:66px"><col style="width:30px"></colgroup><tr><th>Locación</th><th>Entregas</th><th class="num">Cola</th><th class="num">Perm.</th><th></th></tr>`+YAC.filter(([id])=>S.f.yac==='Todos'||S.f.yac===id).map(([id,d,pl,q,pm])=>{const s=yacState(id),ps=lvl(pm,{tg:60,th:75,dir:-1});
-    return `<tr class="s-${s}" data-y="${id}"><td class="n">${ND[id].n}</td><td>${d} de ${pl}</td><td class="num">${q}</td><td class="num" style="${ps!=='ok'?'color:var(--'+ps+');font-weight:700':''}">${dmin(pm)}</td><td class="st" title="${ST[s][1]}">${ST[s][0]}</td></tr>`}).join('')+`<tr><td colspan="5" class="tnote" style="white-space:normal">Permanencia objetivo ≤ 1 h · umbral 1h15 · clic en una locación para filtrar</td></tr>`;
+function renderPc(){
+  const L=[...PCS.filter(p=>p.id!=='PC8').slice().sort((a,b)=>b.p-a.p),PCS.find(p=>p.id==='PC8')];
+  $('#pcTbl').innerHTML=`<colgroup><col style="width:58px"><col><col style="width:72px"><col style="width:30px"></colgroup><tr><th>PC</th><th>Zona · riesgo</th><th class="num">Ahora</th><th></th></tr>`+L.filter(pc=>S.f.pc==='Todas'||S.f.pc===pc.id).map(pc=>{const s=pcState(pc.id),n=U.filter(u=>(pcZone(u)||{}).id===pc.id&&u.e!=='planta').length;
+    return `<tr class="s-${s}" data-pcr="${pc.id}" style="cursor:pointer"><td class="n">${pc.id}</td><td title="${esc(pc.n)} · ${esc(pc.risk)} · km ${pc.km}">${esc(pc.n)}<br><span style="color:var(--t3);font-size:12.5px">${esc(pc.risk)}</span></td><td class="num">${n}</td><td class="st" title="${ST[s][1]}">${ST[s][0]}</td></tr>`}).join('');
 }
 function renderCyc(){
-  const st=[['Carga','0:20',24,20],['Ida','2:20',161,140],['Descarga','0:20',22,20],['Vuelta','2:20',141,140]],tot=st.reduce((a,x)=>a+x[2],0);
+  const st=[['Carga','0:20',24,20],['Ida','2:20',161,140],['Descarga','0:20',31,20],['Vuelta','2:20',141,140]],tot=st.reduce((a,x)=>a+x[2],0);
   const cls=(r,o)=>r<=o?'ok':r<=o*1.1?'warn':'crit';
-  $('#cyc').innerHTML=`<div class="brk">${st.map(([n,o,r,om],i)=>`${i?'<div class="op">+</div>':''}<div class="s-${cls(r,om)}"><div class="bv">${Math.floor(r/60)}:${p2(r%60)}</div><div class="bo">obj ${o}</div><div class="bl">${n}</div></div>`).join('')}<div class="op">=</div><div class="tot s-${lvl(tot,K[3])}"><div class="bv">${Math.floor(tot/60)}:${p2(tot%60)}</div><div class="bo">obj 5:20 h</div><div class="bl">Ciclo</div></div></div>
-   <div class="cnote">La <b>ida</b> explica la demora (+21 min): el tramo de ripio (30 km) baja la velocidad. <b>Unidad 02</b> detenida no entra en el promedio. Parámetros del ciclo: caso de referencia de arena a granel (35 tn por viaje, 153 km).</div>`;
+  $('#cyc').innerHTML=`<div class="brk">${st.map(([n,o,r,om],i)=>`${i?'<div class="op">+</div>':''}<div class="s-${cls(r,om)}"><div class="bv">${Math.floor(r/60)}:${p2(r%60)}</div><div class="bo">obj ${o}</div><div class="bl">${n}</div></div>`).join('')}<div class="op">=</div><div class="tot s-${lvl(tot,K[2])}"><div class="bv">${Math.floor(tot/60)}:${p2(tot%60)}</div><div class="bo">obj 5:20</div><div class="bl">Ciclo</div></div></div>
+   ${winBars()}
+   <div class="cnote"><b>Ida</b> +21 min: curvas y pendientes de PC5 y espera en el puente de carril único (PC4). <b>Descarga</b> +11 min por cola en planta.</div>`;
 }
+/* ventanas operativas: cantera 05–01 h (corte 01–05) y planta 24 h */
+function winBars(){const nh=(new Date(now()).getHours()+new Date(now()).getMinutes()/60)/24*100;
+  return `<div class="wins"><div class="wl">Cantera</div><div class="wb"><i style="left:0;width:4.17%" class="off"></i><i style="left:4.17%;width:16.67%" class="cut" title="Corte de cantera 01–05 h"></i><i style="left:20.83%;width:79.17%" class="on"></i><em style="left:${nh}%"></em></div>
+   <div class="wl">Planta</div><div class="wb"><i style="left:0;width:100%" class="on"></i><em style="left:${nh}%"></em></div>
+   <div></div><div class="wt"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>`}
 
 /* ───── bitácora ───── */
 const qSorted=()=>openE().filter(matchE).sort((a,b)=>a.p-b.p||a.due-b.due);
@@ -531,7 +554,7 @@ function card(e){const tk=e.st==='en gestión';
   const btns=e.st==='resuelta'?`<button class="btn pri" data-act="close" data-id="${e.id}">Cerrar con causa</button>`:`<button class="btn ${e.st==='nueva'?'pri':''}" data-act="take" data-id="${e.id}" ${tk?'disabled':''}>Tomar</button><button class="btn" data-act="assign" data-id="${e.id}">Asignar</button><button class="btn" data-act="esc" data-id="${e.id}" ${e.esc?'disabled':''}>Escalar</button>${tk?`<button class="btn" data-act="resolve" data-id="${e.id}">Resuelta</button>`:''}`;
   return `<div class="card pp${e.p} ${SCLS[e.st]||''} ${S.selE===e.id?'sel':''}" data-open="${e.id}">
    <div class="c1"><span class="prio">${PIC[e.p]} P${e.p}</span><span class="ctitle" title="${esc(e.t)}">${esc(e.t)}</span><span class="badge">${SLBL[e.st]}</span></div>
-   <div class="c2"><span class="orig ${e.orig==='LT'?'lt':'tc'}" title="${e.orig==='LT'?'Detectada en LiveTracking (unidad o viaje)':'Detectada en la Torre (agregado o cruce de fuentes)'}">${e.orig==='LT'?'LT':'TORRE'}</span>${esc(e.code)} · vence en <b data-due="${e.due}">${dmin((e.due-now())/60000)}</b></div>
+   <div class="c2"><span class="orig ${e.orig==='LT'?'lt':'tc'}" title="${e.orig==='LT'?'Detectada en LiveTracking (unidad o viaje)':'Detectada en la Torre (agregado o cruce de fuentes)'}">${e.orig}</span>${esc(e.code)} · vence en <b data-due="${e.due}">${dmin((e.due-now())/60000)}</b></div>
    <div class="c3">Dueño: <b>${esc(e.owner)}</b>${e.esc?'<span class="esc">↑ Escalada</span>':''} · abierta hace <b data-since="${e.at}">${dmin((now()-e.at)/60000)}</b></div>
    <div class="c4"><span>Sugerido</span>${esc(e.sug)}</div><div class="btns">${btns}</div></div>`}
 function renderQueue(){
@@ -544,16 +567,17 @@ function renderQueue(){
 }
 const met=(l,v,sub,s='ok')=>`<div class="m s-${s}"><div class="ml">${l}</div><div class="mv">${v}</div><div class="ms">${sub||''}</div></div>`;
 function renderDrill(){
-  if(!S.drill)return;const e=E.find(x=>x.id===S.drill);if(!e)return;const steps=['nueva','reconocida','en gestión','resuelta','cerrada'],ci=steps.indexOf(e.st),u=e.u&&U.find(x=>x.id===e.u);
-  $('#crumb').innerHTML=`Distribución YPF · Añelo › Bitácora › <b>${e.id}</b>`;
+  if(!S.drill)return;const e=E.find(x=>x.id===S.drill);if(!e)return;const steps=['nueva','reconocida','en gestión','resuelta','cerrada'],ci=steps.indexOf(e.st),u=e.u&&U.find(x=>x.id===e.u),pc=e.pc&&PCS.find(x=>x.id===e.pc);
+  $('#crumb').innerHTML=`Arena · Cantera → Planta BPO › Bitácora › <b>${e.id}</b>`;
   const acts=e.st==='cerrada'?`<div class="dsub">Cerrada · causa: ${esc(e.causa||'—')}</div>`:[e.st==='nueva'?`<button class="btn" data-act="ack" data-id="${e.id}">Reconocer</button>`:'',e.st!=='resuelta'?`<button class="btn ${e.st==='nueva'?'pri':''}" data-act="take" data-id="${e.id}">Tomar</button><button class="btn" data-act="assign" data-id="${e.id}">Asignar</button><button class="btn" data-act="esc" data-id="${e.id}" ${e.esc?'disabled':''}>Escalar</button>`:'',e.st==='en gestión'?`<button class="btn" data-act="resolve" data-id="${e.id}">Marcar resuelta</button>`:'',e.st==='resuelta'?`<button class="btn pri" data-act="close" data-id="${e.id}">Cerrar con causa</button>`:''].join('');
   $('#drBody').innerHTML=`<h2><span class="pp${e.p} prio">${PIC[e.p]} P${e.p}</span>${esc(e.t)}</h2>
-   <div class="dsub">${e.id} · ${esc(e.proc)} · ${e.yac&&ND[e.yac]?esc(ND[e.yac].n):'Toda la operación'} · <span class="orig ${e.orig==='LT'?'lt':'tc'}">${e.orig==='LT'?'LT':'TORRE'}</span>${esc(e.code)}</div>
+   <div class="dsub">${e.id} · Aluvional · ${pc?`${pc.id} · ${esc(pc.n)}`:e.pc==='D'?'Planta BPO':'Toda la operación'} · <span class="orig ${e.orig==='LT'?'lt':'tc'}">${e.orig}</span>${esc(e.code)}</div>
    <div class="steps">${steps.map((s,i)=>`<div class="${i<ci?'done':i===ci?'cur':''}">${i+1}. ${s[0].toUpperCase()+s.slice(1)}</div>`).join('')}</div>
    <div class="mets">${met('Afecta',fi(e.vol),e.vu,PST[e.p])}${met('Vence en',`<span data-due="${e.due}">${dmin((e.due-now())/60000)}</span>`,'a las '+hm(e.due))}${met('Abierta hace',`<span data-since="${e.at}">${dmin((now()-e.at)/60000)}</span>`,'desde '+hm(e.at))}${met('Dueño',`<span style="font-size:17px">${esc(e.owner)}</span>`,e.esc?'↑ Escalada':'')}</div>
    <div><h3>Qué pasó</h3><div style="font-size:16px">${esc(e.what)}</div></div>
+   ${pc?`<div><h3>Punto de control · hoja de ruta</h3><div style="font-size:15px"><b>${pc.id}</b> · ${esc(pc.n)} · ${esc(pc.risk)} · km ${pc.km} desde cantera</div></div>`:''}
    <div class="sugbox"><span>Acción sugerida</span>${esc(e.sug)}</div>
-   ${u?`<div><h3>Unidad</h3><div style="font-size:15px">Unidad <b>${u.id}</b> · ${esc(u.c)} · ${esc(ND[uFrom(u)].s)} → ${esc(ND[uDest(u)].s)} · ${esc(uSit(u))} <button class="lnk" data-act="locate" data-id="${u.id}">Ubicar en el mapa</button></div></div>`:''}
+   ${u?`<div><h3>Unidad</h3><div style="font-size:15px">Unidad <b>${u.id}</b> · ${ETL[u.e]} · ${ldd(u)} · ${esc(uSit(u))} <button class="lnk" data-act="locate" data-id="${u.id}">Ubicar en el mapa</button></div></div>`:''}
    <div class="btns">${acts}</div>
    <div><h3>Historial</h3><div class="log">${e.log.map(l=>`<div><b>${hm(l.t)}</b>${esc(l.x)}</div>`).join('')}</div></div>`;
 }
@@ -564,7 +588,8 @@ function closeDrill(){S.drill=null;stage.classList.remove('dopen')}
 function renderTop(){
   const o=openE(),c=p=>o.filter(e=>e.p===p).length;
   $('#alerts').innerHTML=`<span class="chip s-crit ${c(1)?'on':''}" id="aP1">▲ P1 ${c(1)}</span><span class="chip s-risk ${c(2)?'on':''}">◆ P2 ${c(2)}</span><span class="chip s-warn">● P3 ${c(3)}</span>`;
-  const p1=c(1),p2c=c(2);$('#tab').innerHTML=`Distribución YPF · Añelo ${p1?`<span class="tb s-crit">▲ ${p1}</span>`:p2c?`<span class="tb s-risk">◆ ${p2c}</span>`:''}`;
+  const p1=c(1),p2c=c(2);$('#tab').innerHTML=`Arena a granel · Cantera → Planta BPO ${p1?`<span class="tb s-crit">▲ ${p1}</span>`:p2c?`<span class="tb s-risk">◆ ${p2c}</span>`:''}`;
+  const h=new Date(now()).getHours(),open=h>=5||h<1;$('#win').innerHTML=`<span class="${open?'won':'woff'}">● Cantera ${open?'operativa · corta a las 01:00':'en corte · abre a las 05:00'}</span><span class="won">● Planta 24 h</span>`;
   $('#srcs').innerHTML='<span>Frescura</span>'+SRC.map(s=>{const st=s.age>s.thr;return `<span class="chip ${st?'stale stripes':''}" title="Umbral ${s.thr} min">${st?'◷ ':''}${s.n} <b>${s.age<1?'<1 min':Math.floor(s.age)+' min'}</b></span>`}).join('');
   const cb=$('#cbar');cb.style.display=S.cont?'flex':'none';
   if(S.cont)cb.innerHTML=`<b>▲ MODO CONTINGENCIA</b><span>desde ${hm(S.contStart)} · Bitácora solo P1–P2 · P1 escaladas a Jefe de turno · umbrales de aviso ampliados</span><button data-act="cont" data-id="0">Finalizar contingencia</button>`;
@@ -573,14 +598,13 @@ function renderTop(){
 }
 function fillSelects(){
   const opt=(a,sel)=>a.map(([v,l])=>`<option value="${v}" ${v===sel?'selected':''}>${l}</option>`).join('');
-  $('#fYac').innerHTML=opt([['Todos','Todos'],['base','Base Añelo (acopio)'],...['lcam','lach','bsur','ach'].map(i=>[i,ND[i].n])],S.f.yac);
-  $('#fCarga').innerHTML=opt([['Todas','Todas'],...CARGAS.map(c=>[c,c])],S.f.carga);
+  $('#fEtapa').innerHTML=opt([['Todas','Todas'],...Object.entries(ETL)],S.f.etapa);
   $('#fEst').innerHTML=opt([['Todos','Todos'],['desvio','Con desvío'],['ok','En objetivo']],S.f.est);
-  const def={yac:'Todos',carga:'Todas',est:'Todos'};let any=false;
-  document.querySelectorAll('.fchip').forEach(l=>{const on=S.f[l.dataset.f]!==def[l.dataset.f];any=any||on;l.classList.toggle('on',on)});
+  $('#fPc').innerHTML=opt([['Todas','Todo el recorrido'],['PC8','Cantera · PC8'],...PCS.filter(p=>p.id!=='PC8').sort((a,b)=>a.p-b.p).map(p=>[p.id,`${p.id} · ${p.n.split(' · ')[0]}`]),['D','Planta BPO']],S.f.pc);
+  let any=false;document.querySelectorAll('.fchip').forEach(l=>{const on=S.f[l.dataset.f]!==FDEF[l.dataset.f];any=any||on;l.classList.toggle('on',on)});
   $('#clearF').style.display=any?'':'none';
 }
-function renderAll(){renderTop();fillSelects();renderKpis();drawMapDyn();renderMov();renderYac();renderCyc();renderQueue();renderDrill();if(S.sel&&!$('#mpop').hidden)showPop(S.sel)}
+function renderAll(){renderTop();fillSelects();renderKpis();drawMapDyn();renderMov();renderPc();renderCyc();renderQueue();renderDrill();if(S.sel&&!$('#mpop').hidden)showPop(S.sel)}
 
 /* ───── acciones ───── */
 let menuCb=null;
@@ -594,10 +618,11 @@ function act(a,id,el){
   const e=E.find(x=>x.id===id);
   switch(a){
     case 'pick':{const it=$('#menu').items;if(menuCb)menuCb(it[+id]);closeMenu();return}
-    case 'theme':S.theme=id;try{localStorage.setItem('ypf_theme',id)}catch(x){}document.documentElement.dataset.theme=id;$('#logo').src=LOGO[id];pal();mapStatic();drawLegend();renderAll();return;
+    case 'theme':S.theme=id;try{localStorage.setItem('alu_theme',id)}catch(x){}document.documentElement.dataset.theme=id;$('#logo').src=LOGO[id];pal();mapStatic();drawLegend();renderAll();return;
     case 'cont':S.cont=id==='1';if(S.cont){S.contStart=now();openE().filter(x=>x.p===1&&!x.esc).forEach(x=>{x.esc=true;logE(x,'Escalada automáticamente a Jefe de turno (contingencia)')});toast('Modo contingencia activo')}else toast('Contingencia finalizada');renderAll();return;
-    case 'clearF':S.f={yac:'Todos',carga:'Todas',est:'Todos'};renderAll();return;
+    case 'clearF':S.f={...FDEF};renderAll();return;
     case 'lbl':S.lbl=!S.lbl;$('#bLbl').classList.toggle('on',S.lbl);drawMapDyn();return;
+    case 'rec':S.rec=!S.rec;$('#bRec').classList.toggle('on',S.rec);drawMapDyn();return;
     case 'popx':S.sel=null;$('#mpop').hidden=true;renderAll();return;
     case 'open':openDrill(id);return;
     case 'back':closeDrill();closeMenu();return;
@@ -617,29 +642,33 @@ document.addEventListener('click',ev=>{
   if(!ev.target.closest('.menu'))closeMenu();
   const o=ev.target.closest('[data-open]');if(o){openDrill(o.dataset.open);return}
   const u=ev.target.closest('[data-u]');if(u){const id=u.dataset.u;if(S.sel===id&&!$('#mpop').hidden){S.sel=null;$('#mpop').hidden=true}else{S.sel=id;showPop(id)}renderAll();return}
-  const y=ev.target.closest('[data-y]');if(y){const id=y.dataset.y;S.f.yac=S.f.yac===id?'Todos':id;renderAll();toast(S.f.yac==='Todos'?'Filtro quitado':`Filtrado por ${ND[id].n}`);return}
+  const pc=ev.target.closest('[data-pc],[data-pcr]');if(pc){const id=pc.dataset.pc||pc.dataset.pcr;S.f.pc=S.f.pc===id?'Todas':id;renderAll();toast(S.f.pc==='Todas'?'Filtro quitado':`Filtrado por ${id==='D'?'Planta BPO':id}`);return}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();closeDrill();S.sel=null;$('#mpop').hidden=true;renderAll()}});
-[['#fYac','yac'],['#fCarga','carga'],['#fEst','est']].forEach(([s,k])=>$(s).addEventListener('change',ev=>{S.f[k]=ev.target.value;renderAll()}));
+[['#fEtapa','etapa'],['#fEst','est'],['#fPc','pc']].forEach(([s,k])=>$(s).addEventListener('change',ev=>{S.f[k]=ev.target.value;renderAll()}));
 
-/* ───── ciclo de animación y reloj ───── */
-let lastT=performance.now(),lastSec=0;
-function frame(t){const dt=Math.min(.2,(t-lastT)/1000);lastT=t;
-  U.forEach(u=>{if(!uMoving(u))return;if(u.hold>0){u.hold-=dt;return}u.p+=u.dir*u.sp*dt;if(u.p>=1){u.p=1;u.dir=-1;u.hold=6;if(u.r==='arena')u.q=u.q==='vacío'?'35 tn':'vacío'}if(u.p<=0){u.p=0;u.dir=1;u.hold=6;if(u.r==='arena')u.q=u.q==='vacío'?'35 tn':'vacío'}});
-  moveUnits();if(S.sel&&!$('#mpop').hidden)showPop(S.sel,true)
+/* ───── animación: ida (cantera → planta) y vuelta; al llegar, una pausa breve de carga o descarga ───── */
+let lastT=performance.now();
+function frame(t){const dt=Math.min(.2,(t-lastT)/1000);lastT=t;let ch=false;
+  U.forEach(u=>{if(!uMoving(u))return;if(u.hold>0){u.hold-=dt;if(u.hold<=0){u.e=u.e==='planta'?'vuelta':'ida';u.v=62+Math.round(Math.random()*14);ch=true}return}
+    u.p+=(u.e==='ida'?1:-1)*u.sp*dt;
+    if(u.e==='ida'&&u.p>=1){u.p=1;u.e='planta';u.hold=7;ch=true}
+    if(u.e==='vuelta'&&u.p<=0){u.p=0;u.e='cantera';u.hold=7;ch=true}});
+  if(ch){drawUnits();renderMov()}else moveUnits();if(S.sel&&!$('#mpop').hidden)showPop(S.sel,true);
   requestAnimationFrame(frame)}
 function tick(){fit();const t=now();$('#clock').textContent=hms(t);if(S.sel&&!$('#mpop').hidden)showPop(S.sel);
   document.querySelectorAll('[data-since]').forEach(el=>el.textContent=dmin((t-+el.dataset.since)/60000));
   document.querySelectorAll('[data-due]').forEach(el=>el.textContent=dmin((+el.dataset.due-t)/60000));
   const nx=30-Math.floor((t-BASE)/1000)%30;$('#refresh').innerHTML=`Actualizado <b>${hms(t-(30-nx)*1000)}</b> · próximo en ${nx} s`;
-  if(nx===30){SRC.forEach(s=>{if(s.n!=='Balanza cantera')s.age=Math.random()*(s.thr*.6)});U.filter(u=>u.flag==='det').forEach(u=>u.detMin++);U.filter(u=>u.flag==='gps').forEach(u=>u.gpsMin++);U.filter(u=>u.flag==='loc').forEach(u=>u.locMin++);renderTop();renderMov()}
+  if(nx===30){SRC.forEach(s=>s.age=Math.random()*(s.thr*.6));U.forEach(u=>{if(u.flag==='det')u.detMin++;if(u.flag==='gps')u.gpsMin++;if(u.flag==='loc'||u.flag==='rest')u.locMin++});renderTop();renderMov()}
   else if(Math.floor((t-BASE)/1000)%5===0)renderMov()}
 let lastW=0,lastH=0;
 function fit(){const w=innerWidth,h=innerHeight;if(!w||!h||(w===lastW&&h===lastH))return;lastW=w;lastH=h;const s=Math.min(w/1920,h/1080);window.__s=s;stage.style.transform=`translate(${(w-1920*s)/2}px,${(h-1080*s)/2}px) scale(${s})`}
-/* a los 40 s llega una alerta nueva desde LT, para mostrar el flujo LT → Bitácora */
-function inject(){const e={id:'E-3110',p:1,t:'Unidad 06 detenida en RP7 · falla mecánica',what:'Sin movimiento hace 21 min; el chofer reporta falla de embrague',orig:'LT',code:'UNIDAD_DETENIDA',u:'06',yac:'base',proc:'Tubulares OCTG',owner:'Sin asignar',st:'nueva',at:now(),due:now()+120*60000,vol:22,vu:'tn',sug:'Enviar unidad de reemplazo desde el CD Neuquén',log:[{t:now(),x:'Detectada en LiveTracking · UNIDAD_DETENIDA (> 20 min)'}]};
-  E.push(e);const u=U.find(x=>x.id==='06');u.flag='det';u.detMin=21;u.st='crit';u.x=e.id;if(S.cont){e.esc=true;logE(e,'Escalada automáticamente a Jefe de turno (contingencia)')}
-  renderAll();const a=$('#aP1');a&&a.classList.add('flash');toast('Nueva P1 desde LT · Unidad 06 detenida en RP7')}
+/* a los 40 s entra una alerta nueva desde LT: muestra el circuito LT → Bitácora */
+function inject(){const u=U.find(x=>x.id==='02');u.flag='det';u.detMin=21;u.st='crit';u.v=0;
+  const e={id:'E-4110',p:1,t:'Unidad 02 detenida en PC1 · Los Santitos',what:'Sin movimiento hace 21 min en la subida a RP7, zona de alto tránsito; el chofer reporta pinchadura',orig:'LT',code:'UNIDAD_DETENIDA',u:'02',pc:'PC1',owner:'Sin asignar',st:'nueva',at:now(),due:now()+120*60000,vol:35,vu:'tn',sug:'Balizar, enviar gomería móvil desde Añelo y avisar a planta de la demora',log:[{t:now(),x:'Detectada en LiveTracking · UNIDAD_DETENIDA (> 20 min)'}]};
+  u.p=PCS.find(p=>p.id==='PC1').p-.01;u.x=e.id;E.push(e);if(S.cont){e.esc=true;logE(e,'Escalada automáticamente a Jefe de turno (contingencia)')}
+  renderAll();const a=$('#aP1');a&&a.classList.add('flash');toast('Nueva P1 desde LT · Unidad 02 detenida en PC1')}
 
 document.documentElement.dataset.theme=S.theme;$('#logo').src=LOGO[S.theme];
 pal();mapStatic();drawLegend();renderAll();fit();tick();setInterval(tick,1000);addEventListener('resize',fit);requestAnimationFrame(frame);
